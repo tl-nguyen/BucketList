@@ -2,9 +2,6 @@ package com.telerikacademy.jasmine.thebucketlistapp.tasks;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.widget.Toast;
 
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;

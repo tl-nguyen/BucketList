@@ -3,7 +3,6 @@ package com.telerikacademy.jasmine.thebucketlistapp.tasks;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.telerik.everlive.sdk.core.model.system.AccessToken;
 import com.telerik.everlive.sdk.core.result.RequestResult;
