@@ -3,6 +3,7 @@ package com.telerikacademy.jasmine.thebucketlistapp.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -59,11 +60,16 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     public static void showAlert(Context context, String text) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
     }
 
     public static void showAlert(Context context, int id) {
-        Toast.makeText(context, id, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, id, Toast.LENGTH_LONG).show();
+    }
+
+    public static void startMainActivity(Activity activity) {
+        Intent i = new Intent(activity, MainActivity.class);
+        activity.startActivity(i);
     }
 
     private void register() {
@@ -106,6 +112,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         BaseViewModel.EverliveAPP.workWith().
                 authentication().
                 login(userName, password).
-                executeAsync(new LoginRequestResultCallbackAction(this, "Regular", this.progressDialog));
+                executeAsync(new LoginRequestResultCallbackAction(this, this.progressDialog));
     }
 }

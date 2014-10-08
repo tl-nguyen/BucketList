@@ -12,8 +12,11 @@
     <string name="tvDontHaveAccount">Don\'t Have An Account Yet?</string>
     <string name="dialogLogin">Logging in …</string>
     <string name="dialogRegister">Registering …</string>
-
     <string name="emptyUserNameAndPassword">The UserName or Password fields cannot be empty</string>
     <string name="registerSuccess">Register Success, please Login</string>
+
+    <string name="title_section1">Home</string>
+    <string name="title_section2">Bucket List</string>
+    <string name="title_section3">Profile</string>
 
 </resources>

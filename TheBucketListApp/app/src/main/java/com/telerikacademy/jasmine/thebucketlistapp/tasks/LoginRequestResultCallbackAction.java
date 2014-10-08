@@ -10,13 +10,11 @@ import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.activities.LoginActivity;
 
 public class LoginRequestResultCallbackAction extends RequestResultCallbackAction<AccessToken> {
-    private String loginMethod;
     private Activity activity;
     private ProgressDialog progressDialog;
 
-    public LoginRequestResultCallbackAction(Activity activity, String loginMethod, ProgressDialog progressDialog) {
+    public LoginRequestResultCallbackAction(Activity activity, ProgressDialog progressDialog) {
         this.activity = activity;
-        this.loginMethod = loginMethod;
         this.progressDialog = progressDialog;
     }
 
@@ -25,7 +23,7 @@ public class LoginRequestResultCallbackAction extends RequestResultCallbackActio
         progressDialog.dismiss();
 
         if (accessTokenRequestResult.getSuccess()) {
-            Log.d("BucketList", "login success");
+            LoginActivity.startMainActivity(this.activity);
         } else {
             final String errorMessage = accessTokenRequestResult.getError().getMessage();
 
