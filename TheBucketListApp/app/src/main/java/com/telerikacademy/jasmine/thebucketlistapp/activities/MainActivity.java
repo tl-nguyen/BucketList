@@ -10,6 +10,7 @@ import android.app.FragmentTransaction;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,7 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.telerik.everlive.sdk.core.model.system.User;
+import com.telerik.everlive.sdk.core.result.RequestResult;
+import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
+import com.telerikacademy.jasmine.thebucketlistapp.models.BaseViewModel;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
 

@@ -18,7 +18,6 @@ import com.telerikacademy.jasmine.thebucketlistapp.models.BaseViewModel;
 import com.telerikacademy.jasmine.thebucketlistapp.tasks.LoginRequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.tasks.RegisterRequestResultCallBackAction;
 
-
 public class LoginActivity extends Activity implements View.OnClickListener{
 
     private EditText username;
@@ -43,6 +42,20 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         this.btnLogin.setOnClickListener(this);
         this.btnRegister.setOnClickListener(this);
+
+        this.username.setText(getResources().getString(R.string.defaultUsername));
+        this.password.setText(getResources().getString(R.string.defaultPassword));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        final User loggedUser = BaseViewModel.getInstance().getLoggedUser();
+
+        if (loggedUser != null) {
+            LoginActivity.startMainActivity(this);
+        }
     }
 
     @Override
@@ -68,8 +81,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     public static void startMainActivity(Activity activity) {
-        Intent i = new Intent(activity, MainActivity.class);
-        activity.startActivity(i);
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
     }
 
     private void register() {
@@ -103,11 +116,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         String userName = this.username.getText().toString();
         String password = this.password.getText().toString();
-
-        if (userName.equals("") && password.equals("")) {
-            userName = getResources().getString(R.string.defaultUsername);
-            password = getResources().getString(R.string.defaultPassword);
-        }
 
         BaseViewModel.EverliveAPP.workWith().
                 authentication().
