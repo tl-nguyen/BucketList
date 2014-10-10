@@ -1,16 +1,26 @@
 package com.telerikacademy.jasmine.thebucketlistapp.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.telerik.everlive.sdk.core.model.result.CreateResultItem;
+import com.telerik.everlive.sdk.core.result.RequestResult;
+import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
-import com.telerikacademy.jasmine.thebucketlistapp.activities.fragments.GoalsFragment;
+import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
+import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
+import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
+
+import java.util.UUID;
 
 public class NewGoalActivity extends Activity implements View.OnClickListener {
 
@@ -55,12 +65,61 @@ public class NewGoalActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnCancel) {
-            Intent goalsScreen = new Intent(NewGoalActivity.this, MainActivity.class);
-
-            this.startActivity(goalsScreen);
-
+            startGoalScreen();
         } else if (v.getId() == R.id.btnSave) {
+            Idea idea = new Idea(this.mGoalTitle.getText().toString(),
+                                    this.mGoalDescription.getText().toString());
 
+            RemoteDbManager.getInstance().createIdea(idea, new RequestResultCallbackAction() {
+
+                @Override
+                public void invoke(RequestResult requestResult) {
+                    if (requestResult.getSuccess()) {
+                        CreateResultItem resultItem = (CreateResultItem) requestResult.getValue();
+
+                        Goal goal = new Goal(mGoalTitle.getText().toString(),
+                                                mGoalDescription.getText().toString(),
+                                                UUID.fromString(resultItem.getServerId().toString()));
+
+                        RemoteDbManager.getInstance().createGoal(goal, new RequestResultCallbackAction() {
+
+                            @Override
+                            public void invoke(RequestResult requestResult) {
+                                if (requestResult.getSuccess()) {
+                                    startGoalScreen();
+                                } else {
+                                    processError(requestResult);
+                                }
+                            }
+                        });
+
+                    } else {
+                        processError(requestResult);
+                    }
+                }
+            });
         }
+    }
+
+    private void startGoalScreen() {
+        Intent goalsScreen = new Intent(NewGoalActivity.this, MainActivity.class);
+        this.startActivity(goalsScreen);
+    }
+
+    private void processError(RequestResult requestResult) {
+        final String errorMessage = requestResult.getError().getMessage();
+
+        NewGoalActivity.this.runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                showAlert(NewGoalActivity.this, errorMessage);
+            }
+
+        });
+    }
+
+    private void showAlert(Context context, String text) {
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
     }
 }

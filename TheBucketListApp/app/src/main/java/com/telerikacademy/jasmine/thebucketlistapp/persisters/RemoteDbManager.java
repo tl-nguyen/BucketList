@@ -4,6 +4,8 @@ import com.telerik.everlive.sdk.core.EverliveApp;
 import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.query.definition.UserSecretInfo;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
+import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
+import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
 
 public class RemoteDbManager {
     private static RemoteDbManager instance;
@@ -47,6 +49,20 @@ public class RemoteDbManager {
         this.everlive.workWith().
                 authentication().
                 login(userName, password).
+                executeAsync(callbackAction);
+    }
+
+    public void createIdea(Idea idea, RequestResultCallbackAction callbackAction) {
+        this.everlive.workWith().
+                data(Idea.class).
+                create(idea).
+                executeAsync(callbackAction);
+    }
+
+    public void createGoal(Goal goal, RequestResultCallbackAction callbackAction) {
+        this.everlive.workWith().
+                data(Goal.class).
+                create(goal).
                 executeAsync(callbackAction);
     }
 }

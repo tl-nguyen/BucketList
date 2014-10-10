@@ -10,6 +10,13 @@ import java.util.UUID;
 
 @ServerType("Goals")
 public class Goal extends DataItem {
+
+    public Goal(String title, String description, UUID ideaId) {
+        this.title = title;
+        this.description = description;
+        this.ideaId = ideaId;
+    }
+
     @ServerProperty("Title")
     private String title;
 
