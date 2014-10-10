@@ -36,7 +36,7 @@ public class RemoteDbManager {
                 executeAsync(callbackAction);
     }
 
-    public void registerUser(User user, UserSecretInfo secretInfo, RequestResultCallbackAction callbackAction) {
+    public void register(User user, UserSecretInfo secretInfo, RequestResultCallbackAction callbackAction) {
         this.everlive.workWith().
                 users().
                 create(user, secretInfo).

@@ -14,7 +14,7 @@
     <string name="dialogRegister">Registering …</string>
     <string name="emptyUserNameAndPassword">The UserName or Password fields cannot be empty</string>
     <string name="registerSuccess">Register Success, please Login</string>
-    <string name="bucketListPageTitle">Bucket List</string>
+    <string name="goalsPageTitle">Goals</string>
     <string name="braggersPageTitle">Braggers</string>
     <string name="ideasPageTitle">Ideas Land</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>

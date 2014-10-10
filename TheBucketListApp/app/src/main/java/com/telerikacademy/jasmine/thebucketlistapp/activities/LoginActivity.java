@@ -104,7 +104,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         UserSecretInfo secretInfo = new UserSecretInfo();
         secretInfo.setPassword(password);
 
-        RemoteDbManager.getInstance().registerUser(user,
+        RemoteDbManager.getInstance().register(user,
                 secretInfo,
                 new RegisterRequestResultCallBackAction(this, this.progressDialog));
     }

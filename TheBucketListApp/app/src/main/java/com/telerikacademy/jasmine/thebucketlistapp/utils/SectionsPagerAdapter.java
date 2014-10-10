@@ -7,7 +7,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.activities.fragments.BraggersFragment;
-import com.telerikacademy.jasmine.thebucketlistapp.activities.fragments.BucketListFragment;
+import com.telerikacademy.jasmine.thebucketlistapp.activities.fragments.GoalsFragment;
 import com.telerikacademy.jasmine.thebucketlistapp.activities.fragments.IdeasFragment;
 
 import java.util.Locale;
@@ -31,7 +31,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                return new BucketListFragment();
+                return new GoalsFragment();
             case 1:
                 return new BraggersFragment();
             case 2:
@@ -53,7 +53,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Locale l = Locale.getDefault();
         switch (position) {
             case 0:
-                return this.context.getString(R.string.bucketListPageTitle).toUpperCase(l);
+                return this.context.getString(R.string.goalsPageTitle).toUpperCase(l);
             case 1:
                 return this.context.getString(R.string.braggersPageTitle).toUpperCase(l);
             case 2:

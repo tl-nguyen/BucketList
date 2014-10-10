@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.activities.MainActivity;
 
-public class BucketListFragment extends Fragment {
+public class GoalsFragment extends Fragment {
 
     private ImageButton mCameraBtn;
     private View mRootView;
@@ -36,7 +36,7 @@ public class BucketListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        this.mRootView = inflater.inflate(R.layout.fragment_bucket_list, container, false);
+        this.mRootView = inflater.inflate(R.layout.fragment_goals, container, false);
 
         mCameraBtn = (ImageButton) mRootView.findViewById(R.id.btnCamera);
 
