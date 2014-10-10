@@ -2,14 +2,14 @@ package com.telerikacademy.jasmine.thebucketlistapp.tasks;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.util.Log;
 
 import com.telerik.everlive.sdk.core.model.system.AccessToken;
 import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.activities.LoginActivity;
-import com.telerikacademy.jasmine.thebucketlistapp.models.BaseViewModel;
+import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
+import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 
 public class LoginRequestResultCallbackAction extends RequestResultCallbackAction<AccessToken> {
     private Activity activity;
@@ -26,17 +26,13 @@ public class LoginRequestResultCallbackAction extends RequestResultCallbackActio
 
         if (accessTokenRequestResult.getSuccess()) {
 
-            BaseViewModel.EverliveAPP.
-                    workWith().
-                    users().
-                    getMe().
-                    executeAsync(new RequestResultCallbackAction() {
-                        @Override
-                        public void invoke(RequestResult requestResult) {
-                            User me = (User) requestResult.getValue();
-                            BaseViewModel.getInstance().setLoggedUser(me);
-                        }
-                    });
+            RemoteDbManager.getInstance().getMe(new RequestResultCallbackAction() {
+                @Override
+                public void invoke(RequestResult requestResult) {
+                    User me = (User) requestResult.getValue();
+                    LoggedUser.getInstance().setLoggedUser(me);
+                }
+            });
 
             LoginActivity.startMainActivity(this.activity);
         } else {

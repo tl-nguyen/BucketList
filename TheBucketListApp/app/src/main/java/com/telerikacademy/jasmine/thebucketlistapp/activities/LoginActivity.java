@@ -10,11 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.telerik.everlive.sdk.core.EverliveApp;
 import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.query.definition.UserSecretInfo;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
-import com.telerikacademy.jasmine.thebucketlistapp.models.BaseViewModel;
+import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
+import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 import com.telerikacademy.jasmine.thebucketlistapp.tasks.LoginRequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.tasks.RegisterRequestResultCallBackAction;
 
@@ -31,7 +31,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        BaseViewModel.EverliveAPP = new EverliveApp(getString(R.string.backendServicesApiKey));
+        RemoteDbManager.getInstance().setEverlive(getString(R.string.backendServicesApiKey));
 
         this.progressDialog = new ProgressDialog(this);
 
@@ -51,7 +51,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     protected void onResume() {
         super.onResume();
 
-        final User loggedUser = BaseViewModel.getInstance().getLoggedUser();
+        final User loggedUser = LoggedUser.getInstance().getLoggedUser();
 
         if (loggedUser != null) {
             LoginActivity.startMainActivity(this);
@@ -104,10 +104,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         UserSecretInfo secretInfo = new UserSecretInfo();
         secretInfo.setPassword(password);
 
-        BaseViewModel.EverliveAPP.workWith().
-                users().
-                create(user, secretInfo).
-                executeAsync(new RegisterRequestResultCallBackAction(this, this.progressDialog));
+        RemoteDbManager.getInstance().registerUser(user,
+                secretInfo,
+                new RegisterRequestResultCallBackAction(this, this.progressDialog));
     }
 
     private void login() {
@@ -117,9 +116,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         String userName = this.username.getText().toString();
         String password = this.password.getText().toString();
 
-        BaseViewModel.EverliveAPP.workWith().
-                authentication().
-                login(userName, password).
-                executeAsync(new LoginRequestResultCallbackAction(this, this.progressDialog));
+        RemoteDbManager.getInstance().login(userName,
+                password,
+                new LoginRequestResultCallbackAction(this, this.progressDialog));
     }
 }
