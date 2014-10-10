@@ -9,25 +9,29 @@
     tools:context="com.telerikacademy.jasmine.thebucketlistapp.activities.MainActivity$PlaceholderFragment">
 
 
-    <ImageButton
-        android:layout_width="70dp"
+    <Button
+        android:layout_width="150dp"
         android:layout_height="70dp"
         android:id="@+id/btnCamera"
-        android:src="@drawable/ic_action_camera"
-        android:layout_marginRight="50dp"
+        android:drawableLeft="@drawable/ic_action_camera"
+        android:layout_marginRight="10dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:text="@string/btnTakePhoto"
+        android:textSize="20sp" />
 
-    <ImageButton
-        android:layout_width="70dp"
+    <Button
+        android:layout_width="150dp"
         android:layout_height="70dp"
         android:id="@+id/btnNewGoal"
-        android:src="@drawable/ic_action_new"
+        android:drawableLeft="@drawable/ic_action_new"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="50dp" />
+        android:layout_marginLeft="10dp"
+        android:text="@string/btnNewGoal"
+        android:textSize="20sp" />
 
     <ListView
         android:layout_width="wrap_content"

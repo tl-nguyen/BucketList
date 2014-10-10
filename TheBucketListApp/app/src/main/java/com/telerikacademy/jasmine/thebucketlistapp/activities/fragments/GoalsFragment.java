@@ -8,19 +8,29 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.activities.MainActivity;
+import com.telerikacademy.jasmine.thebucketlistapp.activities.NewGoalActivity;
 
-public class GoalsFragment extends Fragment {
+public class GoalsFragment extends Fragment implements View.OnClickListener{
 
-    private ImageButton mCameraBtn;
+    private Button mCameraBtn;
+    private Button mNewGoalBtn;
     private View mRootView;
 
     private void startCamera() {
         Intent camera = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
         this.startActivityForResult(camera, 100);
+    }
+
+    private void initializeComponents () {
+        mCameraBtn = (Button) mRootView.findViewById(R.id.btnCamera);
+        mNewGoalBtn = (Button) mRootView.findViewById(R.id.btnNewGoal);
+
+        mCameraBtn.setOnClickListener(this);
+        mNewGoalBtn.setOnClickListener(this);
     }
 
     @Override
@@ -38,15 +48,21 @@ public class GoalsFragment extends Fragment {
 
         this.mRootView = inflater.inflate(R.layout.fragment_goals, container, false);
 
-        mCameraBtn = (ImageButton) mRootView.findViewById(R.id.btnCamera);
-
-        mCameraBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startCamera();
-            }
-        });
+        initializeComponents();
 
         return mRootView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btnCamera) {
+            startCamera();
+        } else if (v.getId() == R.id.btnNewGoal) {
+            Intent newGoalScreen = new Intent(this.getActivity(), NewGoalActivity.class);
+
+            this.getActivity().startActivity(newGoalScreen);
+        }
+
+
     }
 }
