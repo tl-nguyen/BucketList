@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,7 +91,6 @@ public class NewGoalActivity extends Activity implements View.OnClickListener {
                                 }
                             }
                         });
-
                     } else {
                         processError(requestResult);
                     }
@@ -103,6 +101,7 @@ public class NewGoalActivity extends Activity implements View.OnClickListener {
 
     private void startGoalScreen() {
         Intent goalsScreen = new Intent(NewGoalActivity.this, MainActivity.class);
+        goalsScreen.putExtra(getString(R.string.FRAGMENT), getResources().getInteger(R.integer.GOALS_FRAGMENT));
         this.startActivity(goalsScreen);
     }
 

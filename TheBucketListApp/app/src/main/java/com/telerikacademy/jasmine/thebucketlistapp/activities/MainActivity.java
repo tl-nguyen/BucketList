@@ -69,6 +69,15 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int data = getIntent().getIntExtra(getString(R.string.FRAGMENT), 0);
+
+        mViewPager.setCurrentItem(data);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

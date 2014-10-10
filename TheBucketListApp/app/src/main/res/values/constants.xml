@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="GOALS_FRAGMENT">0</integer>
+    <integer name="BRAGGERS_FRAGMENT">1</integer>
+    <integer name="IDEAS_FRAGMENT">2</integer>
+    <string name="FRAGMENT">Fragment</string>
+
+</resources>
