@@ -58,7 +58,25 @@ public class NewGoalActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean areValidInputs() {
+        boolean areValid = true;
+
+        if (this.mGoalTitle.getText().toString().equals("")) {
+            areValid = false;
+        }
+
+        return areValid;
+    }
+
     private void saveGoal() {
+
+        if(!areValidInputs()) {
+
+            processInvalidInputs();
+
+            return;
+        }
+
         Idea idea = new Idea(this.mGoalTitle.getText().toString(),
                 this.mGoalDescription.getText().toString());
 
@@ -88,6 +106,19 @@ public class NewGoalActivity extends Activity {
                     processError(requestResult);
                 }
             }
+        });
+    }
+
+    private void processInvalidInputs() {
+        final String errorMessage = "The Goal Title can't not be empty";
+
+        NewGoalActivity.this.runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                showAlert(NewGoalActivity.this, errorMessage);
+            }
+
         });
     }
 

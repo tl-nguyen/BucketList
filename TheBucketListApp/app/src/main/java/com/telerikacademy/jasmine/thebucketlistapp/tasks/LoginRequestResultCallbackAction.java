@@ -22,7 +22,7 @@ public class LoginRequestResultCallbackAction extends RequestResultCallbackActio
 
     @Override
     public void invoke(RequestResult<AccessToken> accessTokenRequestResult) {
-        progressDialog.dismiss();
+
 
         if (accessTokenRequestResult.getSuccess()) {
 
@@ -31,11 +31,15 @@ public class LoginRequestResultCallbackAction extends RequestResultCallbackActio
                 public void invoke(RequestResult requestResult) {
                     User me = (User) requestResult.getValue();
                     LoggedUser.getInstance().setLoggedUser(me);
+
+                    progressDialog.dismiss();
+
+                    LoginActivity.startMainActivity(activity);
                 }
             });
-
-            LoginActivity.startMainActivity(this.activity);
         } else {
+            progressDialog.dismiss();
+
             final String errorMessage = accessTokenRequestResult.getError().getMessage();
 
             this.activity.runOnUiThread(new Runnable() {

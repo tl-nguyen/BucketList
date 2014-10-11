@@ -26,9 +26,6 @@ public class Goal extends DataItem {
     @ServerProperty("Done")
     private boolean isDone;
 
-    @ServerProperty("Owner")
-    private UUID userId;
-
     @ServerProperty("Idea")
     private UUID ideaId;
 
@@ -57,14 +54,6 @@ public class Goal extends DataItem {
 
     public void setDone(boolean isDone) {
         this.isDone = isDone;
-    }
-
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
     }
 
     public UUID getIdeaId() {

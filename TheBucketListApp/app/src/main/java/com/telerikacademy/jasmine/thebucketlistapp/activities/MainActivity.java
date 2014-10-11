@@ -79,7 +79,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         mViewPager.setCurrentItem(data);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
