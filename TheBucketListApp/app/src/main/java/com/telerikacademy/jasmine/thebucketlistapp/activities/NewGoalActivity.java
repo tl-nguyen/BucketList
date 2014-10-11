@@ -21,12 +21,10 @@ import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 
 import java.util.UUID;
 
-public class NewGoalActivity extends Activity implements View.OnClickListener {
+public class NewGoalActivity extends Activity {
 
     private EditText mGoalTitle;
     private EditText mGoalDescription;
-    private Button mCancelBtn;
-    private Button mSaveBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +33,12 @@ public class NewGoalActivity extends Activity implements View.OnClickListener {
 
         this.mGoalTitle = (EditText) findViewById(R.id.etGoalTitle);
         this.mGoalDescription = (EditText) findViewById(R.id.etGoalDescriptrion);
-        this.mCancelBtn = (Button) findViewById(R.id.btnCancel);
-        this.mSaveBtn = (Button) findViewById(R.id.btnSave);
-
-        this.mCancelBtn.setOnClickListener(this);
-        this.mSaveBtn.setOnClickListener(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.new_goal, menu);
         return true;
     }
 
@@ -55,50 +48,47 @@ public class NewGoalActivity extends Activity implements View.OnClickListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_profile) {
-            return true;
+        if (id == R.id.action_cancel) {
+            startGoalScreen();
+        } else if (id == R.id.action_save) {
+            saveGoal();
         } else if (id == R.id.action_logout) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.btnCancel) {
-            startGoalScreen();
-        } else if (v.getId() == R.id.btnSave) {
-            Idea idea = new Idea(this.mGoalTitle.getText().toString(),
-                                    this.mGoalDescription.getText().toString());
+    private void saveGoal() {
+        Idea idea = new Idea(this.mGoalTitle.getText().toString(),
+                this.mGoalDescription.getText().toString());
 
-            RemoteDbManager.getInstance().createIdea(idea, new RequestResultCallbackAction() {
+        RemoteDbManager.getInstance().createIdea(idea, new RequestResultCallbackAction() {
 
-                @Override
-                public void invoke(RequestResult requestResult) {
-                    if (requestResult.getSuccess()) {
-                        CreateResultItem resultItem = (CreateResultItem) requestResult.getValue();
+            @Override
+            public void invoke(RequestResult requestResult) {
+                if (requestResult.getSuccess()) {
+                    CreateResultItem resultItem = (CreateResultItem) requestResult.getValue();
 
-                        Goal goal = new Goal(mGoalTitle.getText().toString(),
-                                                mGoalDescription.getText().toString(),
-                                                UUID.fromString(resultItem.getServerId().toString()));
+                    Goal goal = new Goal(mGoalTitle.getText().toString(),
+                            mGoalDescription.getText().toString(),
+                            UUID.fromString(resultItem.getServerId().toString()));
 
-                        RemoteDbManager.getInstance().createGoal(goal, new RequestResultCallbackAction() {
+                    RemoteDbManager.getInstance().createGoal(goal, new RequestResultCallbackAction() {
 
-                            @Override
-                            public void invoke(RequestResult requestResult) {
-                                if (requestResult.getSuccess()) {
-                                    startGoalScreen();
-                                } else {
-                                    processError(requestResult);
-                                }
+                        @Override
+                        public void invoke(RequestResult requestResult) {
+                            if (requestResult.getSuccess()) {
+                                startGoalScreen();
+                            } else {
+                                processError(requestResult);
                             }
-                        });
-                    } else {
-                        processError(requestResult);
-                    }
+                        }
+                    });
+                } else {
+                    processError(requestResult);
                 }
-            });
-        }
+            }
+        });
     }
 
     private void startGoalScreen() {

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.activities.MainActivity;
@@ -16,8 +17,7 @@ import com.telerikacademy.jasmine.thebucketlistapp.activities.NewGoalActivity;
 
 public class GoalsFragment extends Fragment implements View.OnClickListener{
 
-    private Button mCameraBtn;
-    private Button mNewGoalBtn;
+    private ImageButton mCameraBtn;
     private View mRootView;
 
     private void startCamera() {
@@ -26,11 +26,9 @@ public class GoalsFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initializeComponents () {
-        mCameraBtn = (Button) mRootView.findViewById(R.id.btnCamera);
-        mNewGoalBtn = (Button) mRootView.findViewById(R.id.btnNewGoal);
+        mCameraBtn = (ImageButton) mRootView.findViewById(R.id.btnCamera);
 
         mCameraBtn.setOnClickListener(this);
-        mNewGoalBtn.setOnClickListener(this);
     }
 
     @Override
@@ -57,12 +55,6 @@ public class GoalsFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         if (v.getId() == R.id.btnCamera) {
             startCamera();
-        } else if (v.getId() == R.id.btnNewGoal) {
-            Intent newGoalScreen = new Intent(this.getActivity(), NewGoalActivity.class);
-
-            this.getActivity().startActivity(newGoalScreen);
         }
-
-
     }
 }

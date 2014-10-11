@@ -3,6 +3,7 @@ package com.telerikacademy.jasmine.thebucketlistapp.activities;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -96,6 +97,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             return true;
         } else if (id == R.id.action_logout) {
             return true;
+        } else if (id == R.id.action_add_goal) {
+            Intent newGoalScreen = new Intent(this, NewGoalActivity.class);
+            startActivity(newGoalScreen);
         }
         return super.onOptionsItemSelected(item);
     }
