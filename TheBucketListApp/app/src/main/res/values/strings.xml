@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">The Bucket List App</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">The Bucket List</string>
     <string name="txtTitle">The Bucket List</string>
+    <string name="action_logout">Log Out</string>
+    <string name="action_profile">Profile</string>
     <string name="etUserNameHint">UserName</string>
     <string name="etPasswordHint">Password</string>
     <string name="btnLogin">Login</string>
