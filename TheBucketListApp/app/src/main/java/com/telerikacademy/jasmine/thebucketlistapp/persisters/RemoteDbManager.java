@@ -1,14 +1,11 @@
 package com.telerikacademy.jasmine.thebucketlistapp.persisters;
 
 import com.telerik.everlive.sdk.core.EverliveApp;
-import com.telerik.everlive.sdk.core.facades.read.GetByFilterFacade;
 import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.query.definition.UserSecretInfo;
 import com.telerik.everlive.sdk.core.query.definition.filtering.Condition;
 import com.telerik.everlive.sdk.core.query.definition.filtering.array.ArrayCondition;
 import com.telerik.everlive.sdk.core.query.definition.filtering.array.ArrayConditionOperator;
-import com.telerik.everlive.sdk.core.query.definition.filtering.compound.CompoundCondition;
-import com.telerik.everlive.sdk.core.query.definition.filtering.compound.CompoundConditionOperator;
 import com.telerik.everlive.sdk.core.query.definition.filtering.simple.ValueCondition;
 import com.telerik.everlive.sdk.core.query.definition.filtering.simple.ValueConditionOperator;
 import com.telerik.everlive.sdk.core.query.definition.sorting.SortDirection;
@@ -45,6 +42,14 @@ public class RemoteDbManager {
                 workWith().
                 users().
                 getMe().
+                executeAsync(callbackAction);
+    }
+
+    public void getIdeaOwner(final Idea idea, RequestResultCallbackAction callbackAction) {
+        this.everlive.
+                workWith().
+                users().
+                getById(idea.getOwner()).
                 executeAsync(callbackAction);
     }
 

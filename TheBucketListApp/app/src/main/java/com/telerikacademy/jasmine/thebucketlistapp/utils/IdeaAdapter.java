@@ -47,7 +47,7 @@ public class IdeaAdapter extends ArrayAdapter<Idea> {
 
         if (idea != null) {
             holder.title.setText(idea.getTitle());
-            holder.author.setText("By ");
+            holder.author.setText("By " + idea.getAuthorName());
         }
 
         return row;

@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
@@ -61,18 +62,31 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
                 if (requestResult.getSuccess()) {
                     LoggedUser.getInstance().getIdeas().clear();
 
-                    for (Idea idea : requestResult.getValue()) {
+                    for (final Idea idea : requestResult.getValue()) {
+
+                        RemoteDbManager.getInstance().getIdeaOwner(idea, new RequestResultCallbackAction<User>() {
+                            @Override
+                            public void invoke(RequestResult requestResult) {
+                                if (requestResult.getSuccess()) {
+                                    idea.setAuthorName(((User) requestResult.getValue()).getDisplayName());
+
+                                    listView.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ideasFragment.getIdeaAdapter().notifyDataSetChanged();
+                                        }
+                                    });
+
+                                } else {
+                                    Toast.makeText(activity, requestResult.getError().toString(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
                         LoggedUser.getInstance().getIdeas().add(idea);
                     }
-
-                    listView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ideasFragment.getIdeaAdapter().notifyDataSetChanged();
-                        }
-                    });
                 } else {
-                    Toast.makeText(activity, "Cannot retrieve ideas", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, requestResult.getError().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
