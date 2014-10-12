@@ -27,5 +27,7 @@
     <string name="btnNewGoal">Add Goal</string>
     <string name="btnTakePhoto">Take Photo</string>
     <string name="ivProgress">Progress</string>
+    <string name="txtIdeaTitle">Idea Title</string>
+    <string name="txtIdeaAuthor">By Author</string>
 
 </resources>

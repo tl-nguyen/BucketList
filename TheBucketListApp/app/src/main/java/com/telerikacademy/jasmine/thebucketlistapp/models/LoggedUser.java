@@ -12,6 +12,8 @@ public class LoggedUser {
 
     private List<Goal> goals;
 
+    private List<Idea> ideas;
+
     public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
     }
@@ -24,12 +26,13 @@ public class LoggedUser {
         return goals;
     }
 
-    public void setGoals(List<Goal> goals) {
-        this.goals = goals;
+    public List<Idea> getIdeas() {
+        return ideas;
     }
 
     private LoggedUser() {
         this.goals = new ArrayList<Goal>();
+        this.ideas = new ArrayList<Idea>();
     }
 
     public static LoggedUser getInstance() {

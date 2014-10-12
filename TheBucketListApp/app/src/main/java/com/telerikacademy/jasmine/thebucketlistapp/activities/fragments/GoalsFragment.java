@@ -44,18 +44,18 @@ public class GoalsFragment extends Fragment implements View.OnClickListener, Ada
     }
 
     private void initializeComponents () {
-        mCameraBtn = (ImageButton) mRootView.findViewById(R.id.btnCamera);
-        mGoalListView = (ListView) mRootView.findViewById(R.id.lvGoals);
+        this.mCameraBtn = (ImageButton) mRootView.findViewById(R.id.btnCamera);
+        this.mGoalListView = (ListView) mRootView.findViewById(R.id.lvGoals);
 
         this.goalAdapter = new GoalAdapter(this.getActivity(), R.layout.fragment_list_row_goal, LoggedUser.getInstance().getGoals());
 
-        mGoalListView.setAdapter(this.goalAdapter);
+        this.mGoalListView.setAdapter(this.goalAdapter);
 
         this.loadGoals(mGoalListView, this.getActivity(), this);
 
-        mGoalListView.setOnItemClickListener(this);
+        this.mGoalListView.setOnItemClickListener(this);
 
-        mCameraBtn.setOnClickListener(this);
+        this.mCameraBtn.setOnClickListener(this);
     }
 
     private void loadGoals(final ListView listView, final Activity activity, final GoalsFragment goalsFragment) {

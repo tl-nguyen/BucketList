@@ -20,8 +20,7 @@ public class Idea extends DataItem {
     @ServerProperty("Description")
     private String description;
 
-    @ServerProperty("Owner")
-    private UUID userId;
+    private String authorName;
 
     public String getTitle() {
         return title;
@@ -39,12 +38,12 @@ public class Idea extends DataItem {
         this.description = description;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
 }
