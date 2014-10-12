@@ -20,6 +20,7 @@
     <string name="ideasPageTitle">Ideas Land</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="edit">Edit</string>
     <string name="txtGoalTitleHint">Goal Title</string>
     <string name="txtSetYourNewGoal">Set Your New Goal</string>
     <string name="txtGoalDescriptionHint">Description</string>
@@ -34,5 +35,8 @@
     <string name="etDisplayNameHint">DisplayName</string>
     <string name="etEMailHint">Email</string>
     <string name="btnSaveProfile">Save Changes</string>
+    <string name="txtGreeting">Howdy User</string>
+    <string name="txtProgressInfo">You Have Completed</string>
+    <string name="txtTitleProfile">Profile Information</string>
 
 </resources>

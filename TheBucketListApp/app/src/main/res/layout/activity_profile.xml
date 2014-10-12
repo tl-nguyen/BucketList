@@ -8,64 +8,44 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".ProfileActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollViewProfile">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/txtGreeting"
+        android:id="@+id/tvGreeting"
+        android:layout_marginTop="43dp"
+        android:layout_centerHorizontal="true" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:inputType="textPersonName"
-                android:id="@+id/etDisplayName"
-                android:hint="@string/etDisplayNameHint"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="5dp"
-                android:textSize="20sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/etUserNameHint"
+        android:id="@+id/tvUsername"
+        android:layout_marginTop="31dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvGreeting" />
 
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:id="@+id/etUsernameProfile"
-                android:hint="@string/etUserNameHint"
-                android:layout_below="@+id/etDisplayName"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="5dp"
-                android:textSize="20sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/etEMailHint"
+        android:id="@+id/tvEmail"
+        android:layout_marginTop="31dp"
+        android:layout_below="@+id/tvUsername"
+        android:layout_alignLeft="@+id/tvUsername"
+        android:layout_alignStart="@+id/tvUsername" />
 
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:inputType="textEmailAddress"
-                android:id="@+id/etEMailProfile"
-                android:hint="@string/etEMailHint"
-                android:layout_below="@+id/etUsernameProfile"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="5dp"
-                android:textSize="20sp" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/btnSaveProfile"
-                android:background="@color/bbutton_success"
-                android:id="@+id/btnSaveProfile"
-                android:layout_below="@+id/etEMailProfile"
-                android:layout_margin="5dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="33dp"
-                android:textSize="25sp"
-                android:clickable="true" />
-
-        </RelativeLayout>
-
-    </ScrollView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/txtProgressInfo"
+        android:id="@+id/tvProgressInfo"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

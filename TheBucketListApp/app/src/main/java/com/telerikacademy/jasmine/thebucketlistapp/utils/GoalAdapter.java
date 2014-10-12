@@ -53,7 +53,7 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
             holder.title.setTextColor(goal.isDone() ? Color.GRAY : Color.BLACK);
             holder.description.setText(goal.getDescription());
             holder.description.setTextColor(goal.isDone() ? Color.GRAY : Color.BLACK);
-            holder.isDone.setImageResource(goal.isDone() ? R.drawable.checkmark : R.drawable.turtle);
+            holder.isDone.setImageResource(goal.isDone() ? R.drawable.checkmark : R.drawable.rocket);
         }
 
         return row;
