@@ -29,8 +29,10 @@
     <string name="ivProgress">Progress</string>
     <string name="txtIdeaTitle">Idea Title</string>
     <string name="txtIdeaAuthor">By Author</string>
+    <string name="txtCreatedAt">Created At</string>
     <string name="txtTitleEditProfile">Edit Profile</string>
     <string name="etDisplayNameHint">DisplayName</string>
-    <string name="etEMailHint">EMail</string>
+    <string name="etEMailHint">Email</string>
     <string name="btnSaveProfile">Save Changes</string>
+
 </resources>

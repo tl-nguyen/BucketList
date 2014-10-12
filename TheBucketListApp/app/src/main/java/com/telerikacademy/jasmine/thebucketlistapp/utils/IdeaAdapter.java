@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
 
+import java.text.DateFormat;
 import java.util.List;
 
 public class IdeaAdapter extends ArrayAdapter<Idea> {
@@ -37,6 +38,7 @@ public class IdeaAdapter extends ArrayAdapter<Idea> {
             holder = new IdeaHolder();
             holder.title = (TextView) row.findViewById(R.id.tvRowIdeaTitle);
             holder.author = (TextView) row.findViewById(R.id.tvRowIdeaAuthor);
+            holder.createdAt = (TextView) row.findViewById(R.id.tvCreatedAt);
 
             row.setTag(holder);
         } else {
@@ -47,7 +49,10 @@ public class IdeaAdapter extends ArrayAdapter<Idea> {
 
         if (idea != null) {
             holder.title.setText(idea.getTitle());
-            holder.author.setText("By " + idea.getAuthorName());
+            holder.author.setText("By: " + idea.getAuthorName());
+            holder.createdAt.setText("Created At: " + DateFormat.
+                    getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT).
+                    format(idea.getCreatedAt()));
         }
 
         return row;
@@ -56,5 +61,6 @@ public class IdeaAdapter extends ArrayAdapter<Idea> {
     static class IdeaHolder {
         private TextView title;
         private TextView author;
+        private TextView createdAt;
     }
 }

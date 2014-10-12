@@ -38,5 +38,14 @@
             android:layout_marginLeft="50dp"
             android:layout_marginStart="50dp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/txtCreatedAt"
+            android:id="@+id/tvCreatedAt"
+            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"/>
+
     </LinearLayout>
 </LinearLayout>
