@@ -25,6 +25,10 @@
             android:name=".activities.NewGoalActivity"
             android:label="@string/txtTitleNewGoal" >
         </activity>
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:label="@string/txtTitleEditProfile" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />

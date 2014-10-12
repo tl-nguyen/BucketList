@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.telerikacademy.jasmine.thebucketlistapp.R;
+import com.telerikacademy.jasmine.thebucketlistapp.activities.fragments.ProfileActivity;
 import com.telerikacademy.jasmine.thebucketlistapp.utils.SectionsPagerAdapter;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
@@ -93,7 +94,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_profile) {
-            return true;
+            Intent editProfileScreen = new Intent(this, ProfileActivity.class);
+            startActivity(editProfileScreen);
         } else if (id == R.id.action_logout) {
             return true;
         } else if (id == R.id.action_add_goal) {
