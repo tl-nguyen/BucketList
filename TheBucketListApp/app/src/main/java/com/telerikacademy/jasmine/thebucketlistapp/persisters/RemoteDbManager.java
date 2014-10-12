@@ -67,6 +67,14 @@ public class RemoteDbManager {
                 executeAsync(callbackAction);
     }
 
+    public void logout() {
+        this.everlive.workWith().authentication().logout();
+    }
+
+    public void changePassword(String username, String currentPassword, String newPassword){
+        this.everlive.workWith().users().changePassword(username, currentPassword, newPassword).executeAsync();
+    }
+
     public void createIdea(Idea idea, RequestResultCallbackAction callbackAction) {
         this.everlive.workWith().
                 data(Idea.class).

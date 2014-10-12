@@ -10,8 +10,9 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
-import com.telerikacademy.jasmine.thebucketlistapp.activities.fragments.ProfileActivity;
+import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 import com.telerikacademy.jasmine.thebucketlistapp.utils.SectionsPagerAdapter;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
@@ -97,7 +98,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             Intent editProfileScreen = new Intent(this, ProfileActivity.class);
             startActivity(editProfileScreen);
         } else if (id == R.id.action_logout) {
-            return true;
+            RemoteDbManager.getInstance().logout();
+            Intent loginScreen = new Intent(this, LoginActivity.class);
+            startActivity(loginScreen);
         } else if (id == R.id.action_add_goal) {
             Intent newGoalScreen = new Intent(this, NewGoalActivity.class);
             startActivity(newGoalScreen);
