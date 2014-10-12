@@ -12,6 +12,8 @@ import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 
+import java.util.ArrayList;
+
 public class RemoteDbManager {
     private static RemoteDbManager instance;
 
@@ -67,7 +69,7 @@ public class RemoteDbManager {
                 executeAsync(callbackAction);
     }
 
-    public void retrieveGoals(RequestResultCallbackAction callbackAction) {
+    public void retrieveGoals(RequestResultCallbackAction<ArrayList<Goal>> callbackAction) {
         String loggedUserId = LoggedUser.getInstance().getLoggedUser().getId().toString();
         SortingDefinition sortAsc = new SortingDefinition("CreatedAt", SortDirection.Descending);
 

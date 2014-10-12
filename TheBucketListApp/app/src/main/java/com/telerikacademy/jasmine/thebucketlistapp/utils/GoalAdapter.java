@@ -7,10 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.telerikacademy.jasmine.thebucketlistapp.R;
@@ -42,7 +39,7 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
             holder = new GoalHolder();
             holder.title = (TextView) row.findViewById(R.id.tvRowGoalTitle);
             holder.description = (TextView) row.findViewById(R.id.tvRowGoalDescription);
-            holder.isDone = (CheckBox) row.findViewById(R.id.cbIsDone);
+            holder.isDone = (ImageView) row.findViewById(R.id.ivIsDone);
 
             row.setTag(holder);
         } else {
@@ -53,8 +50,10 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
 
         if (goal != null) {
             holder.title.setText(goal.getTitle());
+            holder.title.setTextColor(goal.isDone() ? Color.GRAY : Color.BLACK);
             holder.description.setText(goal.getDescription());
-            holder.isDone.setChecked(goal.isDone());
+            holder.description.setTextColor(goal.isDone() ? Color.GRAY : Color.BLACK);
+            holder.isDone.setImageResource(goal.isDone() ? R.drawable.checkmark : R.drawable.turtle);
         }
 
         return row;
@@ -63,6 +62,6 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
     static class GoalHolder {
         private TextView title;
         private TextView description;
-        private CheckBox isDone;
+        private ImageView isDone;
     }
 }

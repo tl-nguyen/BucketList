@@ -4,10 +4,14 @@
     android:layout_height="match_parent"
     android:padding="@dimen/activity_vertical_margin">
 
-    <CheckBox
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:id="@+id/cbIsDone"
+        android:layout_weight="1"
+        android:id="@+id/ivIsDone"
+        android:background="@android:color/transparent"
+        android:src="@drawable/turtle"
+        android:contentDescription="@string/ivProgress"
         android:focusable="false"
         android:focusableInTouchMode="false" />
 

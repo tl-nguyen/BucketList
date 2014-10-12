@@ -26,5 +26,6 @@
     <string name="txtTitleNewGoal">New Goal</string>
     <string name="btnNewGoal">Add Goal</string>
     <string name="btnTakePhoto">Take Photo</string>
+    <string name="ivProgress">Progress</string>
 
 </resources>

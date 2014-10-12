@@ -58,7 +58,7 @@ public class GoalsFragment extends Fragment implements View.OnClickListener, Ada
         mCameraBtn.setOnClickListener(this);
     }
 
-    private void loadGoals(final ListView target, final Activity activity, final GoalsFragment goalsFragment) {
+    private void loadGoals(final ListView listView, final Activity activity, final GoalsFragment goalsFragment) {
         RemoteDbManager.getInstance().retrieveGoals(new RequestResultCallbackAction<ArrayList<Goal>>() {
 
             @Override
@@ -70,7 +70,7 @@ public class GoalsFragment extends Fragment implements View.OnClickListener, Ada
                         LoggedUser.getInstance().getGoals().add(goal);
                     }
 
-                    target.post(new Runnable() {
+                    listView.post(new Runnable() {
                         @Override
                         public void run() {
                             goalsFragment.getGoalAdapter().notifyDataSetChanged();
@@ -89,6 +89,7 @@ public class GoalsFragment extends Fragment implements View.OnClickListener, Ada
         if (resultCode == MainActivity.RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap photo = (Bitmap) extras.get("data");
+            //TODO: handling the taken photo
         }
     }
 
@@ -112,5 +113,6 @@ public class GoalsFragment extends Fragment implements View.OnClickListener, Ada
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(this.getActivity(), LoggedUser.getInstance().getGoals().get(position).getTitle(), Toast.LENGTH_SHORT).show();
+        //TODO: making goal detail activity
     }
 }
