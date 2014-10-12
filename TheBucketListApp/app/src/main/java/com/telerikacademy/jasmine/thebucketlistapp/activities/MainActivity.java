@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
+import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 import com.telerikacademy.jasmine.thebucketlistapp.utils.SectionsPagerAdapter;
 
@@ -99,6 +101,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             startActivity(editProfileScreen);
         } else if (id == R.id.action_logout) {
             RemoteDbManager.getInstance().logout();
+
             Intent loginScreen = new Intent(this, LoginActivity.class);
             startActivity(loginScreen);
         } else if (id == R.id.action_add_goal) {

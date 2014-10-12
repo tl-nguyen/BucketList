@@ -68,6 +68,10 @@ public class RemoteDbManager {
     }
 
     public void logout() {
+        LoggedUser.getInstance().setLoggedUser(null);
+        LoggedUser.getInstance().getGoals().clear();
+        LoggedUser.getInstance().getIdeas().clear();
+
         this.everlive.workWith().authentication().logout();
     }
 

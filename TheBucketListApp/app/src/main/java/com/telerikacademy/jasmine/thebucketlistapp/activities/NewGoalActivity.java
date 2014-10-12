@@ -17,6 +17,7 @@ import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
+import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 
 import java.util.UUID;
@@ -60,7 +61,10 @@ public class NewGoalActivity extends Activity {
         } else if (id == R.id.action_save) {
             saveGoal();
         } else if (id == R.id.action_logout) {
-            return true;
+            RemoteDbManager.getInstance().logout();
+
+            Intent loginScreen = new Intent(this, LoginActivity.class);
+            startActivity(loginScreen);
         }
         return super.onOptionsItemSelected(item);
     }
