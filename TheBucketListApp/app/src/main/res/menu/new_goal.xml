@@ -2,17 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.telerikacademy.jasmine.thebucketlistapp.activities.NewGoalActivity" >
 
-    <item android:id="@+id/action_save"
-        android:title="@string/save"
-        android:orderInCategory="100"
-        android:showAsAction="ifRoom"
-        android:icon="@drawable/save" />
-
     <item android:id="@+id/action_cancel"
         android:title="@string/cancel"
-        android:orderInCategory="101"
+        android:orderInCategory="100"
         android:showAsAction="ifRoom"
         android:icon="@drawable/cancel" />
+
+    <item android:id="@+id/action_save"
+        android:title="@string/save"
+        android:orderInCategory="101"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/save" />
 
     <item android:id="@+id/action_logout"
         android:title="@string/action_logout"
