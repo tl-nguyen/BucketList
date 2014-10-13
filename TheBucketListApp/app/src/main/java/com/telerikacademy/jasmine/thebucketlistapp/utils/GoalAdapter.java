@@ -40,6 +40,7 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
             holder.title = (TextView) row.findViewById(R.id.tvRowGoalTitle);
             holder.description = (TextView) row.findViewById(R.id.tvRowGoalDescription);
             holder.isDone = (ImageView) row.findViewById(R.id.ivIsDone);
+            holder.convertView = row;
 
             row.setTag(holder);
         } else {
@@ -54,6 +55,7 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
             holder.description.setText(goal.getDescription());
             holder.description.setTextColor(goal.isDone() ? Color.GRAY : Color.BLACK);
             holder.isDone.setImageResource(goal.isDone() ? R.drawable.checkmark : R.drawable.rocket);
+            holder.convertView.setBackgroundColor(goal.isSelected() ? context.getResources().getColor(R.color.bbutton_primary) : Color.WHITE);
         }
 
         return row;
@@ -63,5 +65,6 @@ public class GoalAdapter extends ArrayAdapter<Goal> {
         private TextView title;
         private TextView description;
         private ImageView isDone;
+        private View convertView;
     }
 }

@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -17,6 +20,7 @@ import android.widget.Toast;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
+import com.telerikacademy.jasmine.thebucketlistapp.activities.GoalDetailActivity;
 import com.telerikacademy.jasmine.thebucketlistapp.activities.MainActivity;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
@@ -25,11 +29,14 @@ import com.telerikacademy.jasmine.thebucketlistapp.utils.GoalAdapter;
 
 import java.util.ArrayList;
 
-public class GoalsFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class GoalsFragment extends Fragment implements View.OnClickListener,
+        AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener{
 
     private ImageButton mCameraBtn;
     private ListView mGoalListView;
     private View mRootView;
+    private Menu mMenu;
 
     private GoalAdapter goalAdapter;
 
@@ -53,6 +60,7 @@ public class GoalsFragment extends Fragment implements View.OnClickListener, Ada
         this.loadGoals(mGoalListView, this.getActivity(), this);
 
         this.mGoalListView.setOnItemClickListener(this);
+        this.mGoalListView.setOnItemLongClickListener(this);
 
         this.mCameraBtn.setOnClickListener(this);
     }
@@ -95,11 +103,19 @@ public class GoalsFragment extends Fragment implements View.OnClickListener, Ada
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+
         this.mRootView = inflater.inflate(R.layout.fragment_goals, container, false);
 
         initializeComponents();
 
         return mRootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        this.mMenu = menu;
     }
 
     @Override
@@ -111,7 +127,37 @@ public class GoalsFragment extends Fragment implements View.OnClickListener, Ada
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this.getActivity(), LoggedUser.getInstance().getGoals().get(position).getTitle(), Toast.LENGTH_SHORT).show();
-        //TODO: making goal detail activity
+        Intent goalDetail = new Intent(mRootView.getContext(), GoalDetailActivity.class);
+        goalDetail.putExtra(getString(R.string.GOAL_POSITION), position);
+        this.startActivity(goalDetail);
+    }
+
+    private boolean areGoalSelected() {
+        for (Goal goal : LoggedUser.getInstance().getGoals()) {
+            if (goal.isSelected()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        boolean isSelected = LoggedUser.getInstance().getGoals().get(position).isSelected();
+        LoggedUser.getInstance().getGoals().get(position).setSelected(!isSelected);
+
+        if (!isSelected) {
+            view.setBackgroundColor(this.getActivity().getResources().getColor(R.color.bbutton_primary));
+        } else {
+            view.setBackgroundColor(Color.WHITE);
+        }
+
+        if (areGoalSelected()) {
+            this.mMenu.findItem(R.id.action_delete).setVisible(true);
+        } else {
+            this.mMenu.findItem(R.id.action_delete).setVisible(false);
+        }
+        return true;
     }
 }

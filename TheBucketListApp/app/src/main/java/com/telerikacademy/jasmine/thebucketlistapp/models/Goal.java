@@ -15,6 +15,7 @@ public class Goal extends DataItem {
         this.title = title;
         this.description = description;
         this.ideaId = ideaId;
+        this.selected = false;
     }
 
     @ServerProperty("Title")
@@ -31,6 +32,8 @@ public class Goal extends DataItem {
 
     @ServerProperty("Pictures")
     private ArrayList<UUID> pictures;
+
+    private boolean selected;
 
     public String getTitle() {
         return title;
@@ -70,5 +73,13 @@ public class Goal extends DataItem {
 
     public void setPictures(ArrayList<UUID> pictures) {
         this.pictures = pictures;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

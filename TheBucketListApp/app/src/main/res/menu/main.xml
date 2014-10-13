@@ -2,6 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.telerikacademy.jasmine.thebucketlistapp.activities.MainActivity" >
 
+    <item android:id="@+id/action_delete"
+        android:title="@string/action_profile"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:visible="false"
+        android:icon="@drawable/delete" />
+
     <item android:id="@+id/action_profile"
         android:title="@string/action_profile"
         android:orderInCategory="100"

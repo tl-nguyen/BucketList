@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
@@ -111,6 +112,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         } else if (id == R.id.action_add_goal) {
             Intent newGoalScreen = new Intent(this, NewGoalActivity.class);
             startActivity(newGoalScreen);
+        } else if (id == R.id.action_delete) {
+            Toast.makeText(this, "deleting", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }

@@ -86,7 +86,6 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
                                             ideasFragment.getIdeaAdapter().notifyDataSetChanged();
                                         }
                                     });
-
                                 } else {
                                     Toast.makeText(activity, requestResult.getError().toString(), Toast.LENGTH_SHORT).show();
                                 }
@@ -153,7 +152,7 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
         // Create the AlertDialog
         AlertDialog dialog = builder.create();
 
-        dialog.setTitle("Idea Detail");
+        dialog.setTitle(getString(R.string.idea_detail));
 
         TextView ideaTitle = (TextView) alertView.findViewById(R.id.ideaDetailTitle);
         TextView ideaDescription = (TextView) alertView.findViewById(R.id.ideaDetailDescription);
