@@ -31,7 +31,9 @@ public class NewGoalActivity extends Activity {
         setContentView(R.layout.activity_new_goal);
 
         ActionBar actionbar = getActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
+        if (actionbar != null) {
+            actionbar.setDisplayHomeAsUpEnabled(true);
+        }
 
         this.mGoalTitle = (EditText) findViewById(R.id.etGoalTitle);
         this.mGoalDescription = (EditText) findViewById(R.id.etGoalDescriptrion);
@@ -121,7 +123,7 @@ public class NewGoalActivity extends Activity {
     }
 
     private void processInvalidInputs() {
-        final String errorMessage = "The Goal Title can't not be empty";
+        final String errorMessage = getString(R.string.goal_title_warning);
 
         NewGoalActivity.this.runOnUiThread(new Runnable() {
 

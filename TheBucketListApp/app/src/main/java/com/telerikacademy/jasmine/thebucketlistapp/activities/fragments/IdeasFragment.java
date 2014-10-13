@@ -1,19 +1,27 @@
 package com.telerikacademy.jasmine.thebucketlistapp.activities.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
+import com.telerikacademy.jasmine.thebucketlistapp.activities.MainActivity;
+import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
@@ -44,7 +52,9 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
     private void initializeComponents () {
         this.mIdeaListView = (ListView) mRootView.findViewById(R.id.lvGoals);
 
-        this.ideaAdapter = new IdeaAdapter(this.getActivity(), R.layout.fragment_list_row_idea, LoggedUser.getInstance().getIdeas());
+        this.ideaAdapter = new IdeaAdapter(this.getActivity(),
+                R.layout.fragment_list_row_idea,
+                LoggedUser.getInstance().getIdeas());
 
         this.mIdeaListView.setAdapter(this.ideaAdapter);
 
@@ -94,6 +104,72 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        LayoutInflater inflater = LayoutInflater.from(this.getActivity());
+        View alertView = inflater.inflate(R.layout.idea_detail, null);
+        final Idea selectedIdea = LoggedUser.getInstance().getIdeas().get(position);
+        final Activity activity = this.getActivity();
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+        builder.setView(alertView);
+
+        // Add the buttons
+        builder.setPositiveButton(R.string.set_goal, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Goal newGoal = new Goal(selectedIdea.getTitle(),
+                        selectedIdea.getDescription(),
+                        selectedIdea.getId());
+
+                RemoteDbManager.getInstance().createGoal(newGoal, new RequestResultCallbackAction() {
+
+                    @Override
+                    public void invoke(final RequestResult requestResult) {
+                        if (requestResult.getSuccess()) {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showAlert(activity, getString(R.string.success_set_idea_as_goal));
+                                    startGoalScreen();
+                                }
+                            });
+                        } else {
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showAlert(activity, requestResult.getError().toString());
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+            }
+        });
+
+        // Create the AlertDialog
+        AlertDialog dialog = builder.create();
+
+        dialog.setTitle("Idea Detail");
+
+        TextView ideaTitle = (TextView) alertView.findViewById(R.id.ideaDetailTitle);
+        TextView ideaDescription = (TextView) alertView.findViewById(R.id.ideaDetailDescription);
+        ideaTitle.setText(selectedIdea.getTitle());
+        ideaDescription.setText(selectedIdea.getDescription());
+
+        dialog.show();
+    }
+
+    private void showAlert(Context context, String text) {
+        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+    }
+
+    private void startGoalScreen() {
+        Intent goalsScreen = new Intent(mRootView.getContext(), MainActivity.class);
+        goalsScreen.putExtra(getString(R.string.FRAGMENT), getResources().getInteger(R.integer.GOALS_FRAGMENT));
+        this.startActivity(goalsScreen);
     }
 }
