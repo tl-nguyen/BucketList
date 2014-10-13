@@ -70,7 +70,7 @@ public class GoalsFragment extends Fragment implements View.OnClickListener,
         RemoteDbManager.getInstance().retrieveGoals(new RequestResultCallbackAction<ArrayList<Goal>>() {
 
             @Override
-            public void invoke(RequestResult<ArrayList<Goal>> requestResult) {
+            public void invoke(final RequestResult<ArrayList<Goal>> requestResult) {
 
                 if (requestResult.getSuccess()) {
                     LoggedUser.getInstance().getGoals().clear();
@@ -88,7 +88,7 @@ public class GoalsFragment extends Fragment implements View.OnClickListener,
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(activity, "Something is wrong, cannot retrieve goals", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, requestResult.getError().toString(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

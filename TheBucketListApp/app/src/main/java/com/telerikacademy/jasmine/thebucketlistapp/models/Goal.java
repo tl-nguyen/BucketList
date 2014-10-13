@@ -2,6 +2,7 @@ package com.telerikacademy.jasmine.thebucketlistapp.models;
 
 
 import com.telerik.everlive.sdk.core.model.base.DataItem;
+import com.telerik.everlive.sdk.core.serialization.ServerIgnore;
 import com.telerik.everlive.sdk.core.serialization.ServerProperty;
 import com.telerik.everlive.sdk.core.serialization.ServerType;
 
@@ -33,6 +34,7 @@ public class Goal extends DataItem {
     @ServerProperty("Pictures")
     private ArrayList<UUID> pictures;
 
+    @ServerIgnore
     private boolean selected;
 
     public String getTitle() {

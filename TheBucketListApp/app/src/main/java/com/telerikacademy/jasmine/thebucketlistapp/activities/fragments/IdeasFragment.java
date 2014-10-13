@@ -67,7 +67,7 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
         RemoteDbManager.getInstance().retrieveIdeas(new RequestResultCallbackAction<ArrayList<Idea>>() {
 
             @Override
-            public void invoke(RequestResult<ArrayList<Idea>> requestResult) {
+            public void invoke(final RequestResult<ArrayList<Idea>> requestResult) {
 
                 if (requestResult.getSuccess()) {
                     LoggedUser.getInstance().getIdeas().clear();
@@ -76,7 +76,7 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
 
                         RemoteDbManager.getInstance().getIdeaOwner(idea, new RequestResultCallbackAction<User>() {
                             @Override
-                            public void invoke(RequestResult requestResult) {
+                            public void invoke(final RequestResult requestResult) {
                                 if (requestResult.getSuccess()) {
                                     idea.setAuthorName(((User) requestResult.getValue()).getDisplayName());
 
@@ -87,7 +87,12 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
                                         }
                                     });
                                 } else {
-                                    Toast.makeText(activity, requestResult.getError().toString(), Toast.LENGTH_SHORT).show();
+                                    activity.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(activity, requestResult.getError().toString(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             }
                         });
@@ -95,7 +100,12 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
                         LoggedUser.getInstance().getIdeas().add(idea);
                     }
                 } else {
-                    Toast.makeText(activity, requestResult.getError().toString(), Toast.LENGTH_SHORT).show();
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(activity, requestResult.getError().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
