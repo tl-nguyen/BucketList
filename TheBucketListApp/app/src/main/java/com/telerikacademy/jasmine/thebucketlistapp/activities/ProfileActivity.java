@@ -1,5 +1,6 @@
 package com.telerikacademy.jasmine.thebucketlistapp.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,9 @@ public class ProfileActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        ActionBar actionbar = getActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -26,7 +30,9 @@ public class ProfileActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_editProfile) {
+        if (id == android.R.id.home) {
+            startGoalScreen();
+        } else if (id == R.id.action_editProfile) {
             return true;
         } else if (id == R.id.action_logout) {
             RemoteDbManager.getInstance().logout();
@@ -35,5 +41,11 @@ public class ProfileActivity extends Activity {
             startActivity(loginScreen);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startGoalScreen() {
+        Intent goalsScreen = new Intent(ProfileActivity.this, MainActivity.class);
+        goalsScreen.putExtra(getString(R.string.FRAGMENT), getResources().getInteger(R.integer.GOALS_FRAGMENT));
+        this.startActivity(goalsScreen);
     }
 }
