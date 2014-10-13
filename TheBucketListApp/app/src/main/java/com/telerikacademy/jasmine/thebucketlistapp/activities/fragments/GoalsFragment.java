@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -84,7 +85,12 @@ public class GoalsFragment extends Fragment implements View.OnClickListener,
                         }
                     });
                 } else {
-                    Toast.makeText(activity, "Cannot retrieve goals", Toast.LENGTH_SHORT).show();
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(activity, "Something is wrong, cannot retrieve goals", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
@@ -115,6 +121,12 @@ public class GoalsFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+
+        if (areGoalSelected()) {
+            menu.findItem(R.id.action_delete).setVisible(true);
+        } else {
+            menu.findItem(R.id.action_delete).setVisible(false);
+        }
         this.mMenu = menu;
     }
 
@@ -140,6 +152,28 @@ public class GoalsFragment extends Fragment implements View.OnClickListener,
         }
 
         return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_delete) {
+            RemoteDbManager.getInstance().deleteGoals(new RequestResultCallbackAction() {
+                @Override
+                public void invoke(RequestResult requestResult) {
+                    if (requestResult.getSuccess()) {
+                        mGoalListView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                GoalsFragment.this.getGoalAdapter().notifyDataSetChanged();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

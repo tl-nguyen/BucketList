@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
@@ -14,6 +16,8 @@ import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 public class GoalDetailActivity extends Activity {
 
     private Goal mGoal;
+    private TextView mGoalTitle;
+    private TextView mGoalDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,12 @@ public class GoalDetailActivity extends Activity {
         } else {
             mGoal = LoggedUser.getInstance().getGoals().get(position);
         }
+
+        this.mGoalTitle = (TextView) findViewById(R.id.goalDetailTitle);
+        this.mGoalDescription = (TextView) findViewById(R.id.goalDetailDescription);
+
+        this.mGoalTitle.setText(mGoal.getTitle());
+        this.mGoalDescription.setText(mGoal.getDescription());
     }
 
     @Override

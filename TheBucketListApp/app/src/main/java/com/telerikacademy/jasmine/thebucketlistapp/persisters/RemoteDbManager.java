@@ -6,6 +6,8 @@ import com.telerik.everlive.sdk.core.query.definition.UserSecretInfo;
 import com.telerik.everlive.sdk.core.query.definition.filtering.Condition;
 import com.telerik.everlive.sdk.core.query.definition.filtering.array.ArrayCondition;
 import com.telerik.everlive.sdk.core.query.definition.filtering.array.ArrayConditionOperator;
+import com.telerik.everlive.sdk.core.query.definition.filtering.compound.CompoundCondition;
+import com.telerik.everlive.sdk.core.query.definition.filtering.compound.CompoundConditionOperator;
 import com.telerik.everlive.sdk.core.query.definition.filtering.simple.ValueCondition;
 import com.telerik.everlive.sdk.core.query.definition.filtering.simple.ValueConditionOperator;
 import com.telerik.everlive.sdk.core.query.definition.sorting.SortDirection;
@@ -107,20 +109,48 @@ public class RemoteDbManager {
     }
 
     public void retrieveIdeas(RequestResultCallbackAction<ArrayList<Idea>> callbackAction) {
+        String loggedUserId = LoggedUser.getInstance().getLoggedUser().getId().toString();
         List<String> goalIds = new ArrayList<String>();
         SortingDefinition sortDesc = new SortingDefinition("CreatedAt", SortDirection.Descending);
+        List<Condition> conditions = new ArrayList<Condition>();
 
         for (Goal goal : LoggedUser.getInstance().getGoals()) {
             goalIds.add(goal.getIdeaId().toString());
         }
 
-        Condition notContainsCondition = new ArrayCondition("Id", ArrayConditionOperator.ValueIsNotIn, goalIds);
+        conditions.add(new ArrayCondition("Id", ArrayConditionOperator.ValueIsNotIn, goalIds));
+        conditions.add(new ValueCondition("Owner", loggedUserId, ValueConditionOperator.NotEqualTo));
+        Condition compoundCondition = new CompoundCondition(CompoundConditionOperator.And, conditions);
 
         this.everlive.workWith().
                 data(Idea.class).
                 get().
-                where(notContainsCondition).
+                where(compoundCondition).
                 sort(sortDesc).
+                executeAsync(callbackAction);
+    }
+
+    public void deleteGoals(RequestResultCallbackAction callbackAction) {
+        List<String> goalIdsToBeDeleted = new ArrayList<String>();
+        List<Goal> goalsToBeDeleted = new ArrayList<Goal>();
+
+        for (Goal goal : LoggedUser.getInstance().getGoals()) {
+            if (goal.isSelected()) {
+                goalIdsToBeDeleted.add(goal.getId().toString());
+                goalsToBeDeleted.add(goal);
+            }
+        }
+
+        for (Goal goal : goalsToBeDeleted) {
+            LoggedUser.getInstance().getGoals().remove(goal);
+        }
+
+        Condition containsCondition = new ArrayCondition("Id", ArrayConditionOperator.ValueIsIn, goalIdsToBeDeleted);
+
+        this.everlive.workWith().
+                data(Goal.class).
+                delete().
+                where(containsCondition).
                 executeAsync(callbackAction);
     }
 }
