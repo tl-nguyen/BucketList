@@ -34,7 +34,7 @@
             android:label="@string/title_activity_goal_detail" >
         </activity>
         <provider
-            android:name=".SQLiteContentProvider"
+            android:name=".persisters.SQLiteContentProvider"
             android:authorities="com.telerikacademy.jasmine.thebucketlistapp.contentprovider" >
         </provider>
     </application>
