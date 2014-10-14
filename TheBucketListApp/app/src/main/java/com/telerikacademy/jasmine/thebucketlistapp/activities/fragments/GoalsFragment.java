@@ -159,13 +159,17 @@ public class GoalsFragment extends Fragment implements View.OnClickListener,
         int id = item.getItemId();
 
         if (id == R.id.action_delete) {
+
+
             RemoteDbManager.getInstance().deleteGoals(new RequestResultCallbackAction() {
                 @Override
                 public void invoke(RequestResult requestResult) {
                     if (requestResult.getSuccess()) {
+
                         mGoalListView.post(new Runnable() {
                             @Override
                             public void run() {
+                                mMenu.findItem(R.id.action_delete).setVisible(false);
                                 GoalsFragment.this.getGoalAdapter().notifyDataSetChanged();
                             }
                         });

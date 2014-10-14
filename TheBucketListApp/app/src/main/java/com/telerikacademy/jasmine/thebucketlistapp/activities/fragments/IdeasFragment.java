@@ -112,7 +112,7 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
         LayoutInflater inflater = LayoutInflater.from(this.getActivity());
         View alertView = inflater.inflate(R.layout.idea_detail, null);
         final Idea selectedIdea = LoggedUser.getInstance().getIdeas().get(position);
@@ -133,11 +133,19 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
                     @Override
                     public void invoke(final RequestResult requestResult) {
                         if (requestResult.getSuccess()) {
+                            LoggedUser.getInstance().getIdeas().remove(position);
+
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     showAlert(activity, getString(R.string.success_set_idea_as_goal));
-                                    startGoalScreen();
+
+                                    mIdeaListView.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            IdeasFragment.this.getIdeaAdapter().notifyDataSetChanged();
+                                        }
+                                    });
                                 }
                             });
                         } else {

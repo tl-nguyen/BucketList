@@ -45,6 +45,9 @@
     <string name="success_set_idea_as_goal">Idea is successfully added to your goals</string>
     <string name="goal_title_warning">The Goal Title can\'t be empty</string>
     <string name="idea_detail">Idea Detail</string>
-
+    <string name="set_as_completed">Set As Completed</string>
+    <string name="brag">Brag About It</string>
+    <string name="open_camera">Take a shot</string>
+    <string name="goal_completed">You have completed the goal \'%s\', you can brag about it by tapping the STAR icon</string>
 
 </resources>

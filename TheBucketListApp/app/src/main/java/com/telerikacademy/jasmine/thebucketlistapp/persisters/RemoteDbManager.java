@@ -153,4 +153,15 @@ public class RemoteDbManager {
                 where(containsCondition).
                 executeAsync(callbackAction);
     }
+
+    public void updateGoal(Goal goal, RequestResultCallbackAction callbackAction) {
+        Goal updatedGoal = new Goal(goal.getTitle(), goal.getDescription(), goal.getIdeaId());
+        updatedGoal.setDone(goal.isDone());
+
+        this.everlive.
+                workWith().
+                data(Goal.class).
+                updateById(goal.getId(), updatedGoal).
+                executeAsync(callbackAction);
+    }
 }

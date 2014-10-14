@@ -2,6 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.telerikacademy.jasmine.thebucketlistapp.activities.GoalDetailActivity" >
 
+    <item android:id="@+id/take_a_shot"
+        android:title="@string/open_camera"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/camera" />
+
+    <item android:id="@+id/set_as_completed"
+        android:title="@string/set_as_completed"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/checkmark" />
+
+    <item android:id="@+id/brag"
+        android:title="@string/brag"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/star" />
+
     <item android:id="@+id/action_logout"
         android:title="@string/action_logout"
         android:orderInCategory="100"
