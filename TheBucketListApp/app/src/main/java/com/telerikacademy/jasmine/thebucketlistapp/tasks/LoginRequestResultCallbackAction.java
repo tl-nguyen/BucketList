@@ -23,7 +23,6 @@ public class LoginRequestResultCallbackAction extends RequestResultCallbackActio
     @Override
     public void invoke(RequestResult<AccessToken> accessTokenRequestResult) {
 
-
         if (accessTokenRequestResult.getSuccess()) {
 
             RemoteDbManager.getInstance().getMe(new RequestResultCallbackAction() {

@@ -51,6 +51,6 @@
     <string name="goal_completed">You have completed the goal \'%s\', you can brag about it by tapping the STAR icon</string>
     <string name="select_option">Select an option</string>
     <string name="from_galerry_select">From Gallery</string>
-    <string name="from_camera_select">From Gallery</string>
+    <string name="from_camera_select">From Camera</string>
 
 </resources>

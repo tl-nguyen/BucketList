@@ -28,6 +28,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class RemoteDbManager {
     private static RemoteDbManager instance;
@@ -176,9 +177,9 @@ public class RemoteDbManager {
                 executeAsync(callbackAction);
     }
 
-    public void updateGoalPictures(Goal goal, RequestResultCallbackAction callbackAction) {
+    public void updateGoalCover(Goal goal, RequestResultCallbackAction callbackAction) {
         Goal updatedGoal = new Goal();
-        updatedGoal.setPictures(goal.getPictures());
+        updatedGoal.setCover(goal.getCover());
 
         this.everlive.
                 workWith().
@@ -195,7 +196,21 @@ public class RemoteDbManager {
         this.everlive.workWith().files().upload(fileField).executeAsync(callbackAction);
     }
 
+    public void deleteImageById(String id) {
+        this.everlive.workWith().
+                files().
+                deleteById(id).
+                executeAsync();
+    }
+
     public RequestResult downloadPicture(String pictureId) {
         return this.everlive.workWith().files().getById(pictureId).executeSync();
+    }
+
+    public void downloadPicture(String pictureId, RequestResultCallbackAction callbackAction) {
+        this.everlive.workWith().
+                files().
+                getById(pictureId).
+                executeAsync(callbackAction);
     }
 }

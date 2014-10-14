@@ -16,7 +16,6 @@ public class Goal extends DataItem {
 
     public Goal() {
         this.selected = false;
-        this.pictures = new ArrayList<UUID>();
     }
 
     public Goal(String title, String description, UUID ideaId) {
@@ -42,15 +41,24 @@ public class Goal extends DataItem {
     @SerializedName("Idea")
     private UUID ideaId;
 
-    @ServerProperty("Pictures")
-    @SerializedName("Pictures")
-    private ArrayList<UUID> pictures;
+
+    @ServerProperty("Cover")
+    @SerializedName("Cover")
+    private UUID cover;
 
     @ServerIgnore
     private boolean selected;
 
     @ServerIgnore
     private Date modifiedAt;
+
+    public UUID getCover() {
+        return cover;
+    }
+
+    public void setCover(UUID cover) {
+        this.cover = cover;
+    }
 
     public String getTitle() {
         return title;
@@ -82,14 +90,6 @@ public class Goal extends DataItem {
 
     public void setIdeaId(UUID ideaId) {
         this.ideaId = ideaId;
-    }
-
-    public ArrayList<UUID> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(ArrayList<UUID> pictures) {
-        this.pictures = pictures;
     }
 
     public boolean isSelected() {

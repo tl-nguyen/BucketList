@@ -16,7 +16,7 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,8 +27,6 @@ import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
-import com.telerikacademy.jasmine.thebucketlistapp.tasks.ImageLoader;
-import com.telerikacademy.jasmine.thebucketlistapp.utils.ImageAdapter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,8 +34,9 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class GoalDetailActivity extends Activity {
@@ -46,13 +45,13 @@ public class GoalDetailActivity extends Activity {
     private Menu mMenu;
     private TextView mGoalTitle;
     private TextView mGoalDescription;
-    private GridView mGoalImagesView;
-    private ImageAdapter imageAdapter;
-    private Context context = this;
-    private List<Bitmap> goalImages;
+    private ImageView mGoalCover;
+    private Bitmap cover;
 
-    final int GET_CAM_IMG=2;
-    final int GET_GAL_IMG=1;
+    private Context context = this;
+
+    final int GET_CAM_IMG = 2;
+    final int GET_GAL_IMG = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,17 +71,55 @@ public class GoalDetailActivity extends Activity {
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
 
+        this.mGoalCover = (ImageView) findViewById(R.id.ivGoalCover);
         this.mGoalTitle = (TextView) findViewById(R.id.goalDetailTitle);
         this.mGoalDescription = (TextView) findViewById(R.id.goalDetailDescription);
 
         this.mGoalTitle.setText(mGoal.getTitle());
         this.mGoalDescription.setText(mGoal.getDescription());
 
-        this.mGoalImagesView = (GridView) this.findViewById(R.id.gvGoalPictures);
+        Bitmap cover = LoggedUser.getInstance().getPictureById(this.mGoal.getCover());
 
-        this.imageAdapter = new ImageAdapter(this, R.layout.grid_cell_goal_image, goalImages);
+        if (cover == null) {
+            downloadGoalCover();
+        } else {
+            mGoalCover.setImageBitmap(cover);
+        }
+    }
 
-        this.mGoalImagesView.setAdapter(this.imageAdapter);
+    private void downloadGoalCover() {
+        RemoteDbManager.getInstance().downloadPicture(mGoal.getCover().toString(), new RequestResultCallbackAction() {
+
+            @Override
+            public void invoke(RequestResult requestResult) {
+                try {
+                    String url = ((File) requestResult.getValue()).getUri();
+                    URL imageUrl = null;
+
+                    imageUrl = new URL(url);
+
+                    InputStream inputStream = null;
+
+                    inputStream = imageUrl.openStream();
+
+                    cover = BitmapFactory.decodeStream(inputStream);
+
+                    LoggedUser.getInstance().addPicture(UUID.fromString(mGoal.getCover().toString()), cover);
+
+                    GoalDetailActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mGoalCover.setImageBitmap(cover);
+                        }
+                    });
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -152,25 +189,34 @@ public class GoalDetailActivity extends Activity {
         }
     }
 
-    private void uploadImage(InputStream stream) {
+    private void uploadImage(final InputStream stream) {
         RemoteDbManager.getInstance().uploadImage(stream, new RequestResultCallbackAction() {
             @Override
             public void invoke(RequestResult requestResult) {
 
                 if (requestResult.getSuccess()) {
-                    ArrayList<File> files = (ArrayList<File>)requestResult.getValue();
+                    ArrayList<File> files = (ArrayList<File>) requestResult.getValue();
 
                     File file = files.get(0);
 
                     UUID id = UUID.fromString(file.getId().toString());
+                    final UUID oldId = mGoal.getCover();
+                    mGoal.setCover(id);
 
-                    mGoal.getPictures().add(id);
-
-                    RemoteDbManager.getInstance().updateGoalPictures(mGoal, new RequestResultCallbackAction() {
+                    RemoteDbManager.getInstance().updateGoalCover(mGoal, new RequestResultCallbackAction() {
                         @Override
                         public void invoke(RequestResult requestResult) {
                             if (requestResult.getSuccess()) {
-                                //TODO: push it to GridView
+                                //Delete old cover from db
+                                RemoteDbManager.getInstance().deleteImageById(oldId.toString());
+
+                                GoalDetailActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Bitmap newGoalCover = BitmapFactory.decodeStream(stream);
+                                        mGoalCover.setImageBitmap(newGoalCover);
+                                    }
+                                });
                             }
                         }
                     });
@@ -179,13 +225,9 @@ public class GoalDetailActivity extends Activity {
         });
     }
 
-    private void loadGoalImages() {
-//        ImageLoader imageLoadTask = new ImageLoader(this, )
-    }
-
     private Bitmap getImageFromCamera(Intent intent) {
         Uri selectedImage = intent.getData();
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
         Cursor cursor = context.getContentResolver().query(
                 selectedImage, filePathColumn, null, null, null);
         cursor.moveToFirst();
@@ -204,8 +246,7 @@ public class GoalDetailActivity extends Activity {
             String selectedImagePath = getPath(selectedImageUri);
 
             bmp_image = BitmapFactory.decodeFile(selectedImagePath);
-        }
-        else {
+        } else {
             ParcelFileDescriptor parcelFileDescriptor;
             try {
                 parcelFileDescriptor = getContentResolver().openFileDescriptor(selectedImageUri, "r");
@@ -223,12 +264,12 @@ public class GoalDetailActivity extends Activity {
     }
 
     private String getPath(Uri uri) {
-        if( uri == null ) {
+        if (uri == null) {
             return null;
         }
-        String[] projection = { MediaStore.Images.Media.DATA };
+        String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);
-        if( cursor != null ){
+        if (cursor != null) {
             int column_index = cursor
                     .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
@@ -248,7 +289,7 @@ public class GoalDetailActivity extends Activity {
     }
 
     private void startCamera() {
-        CharSequence[] names = { getString(R.string.from_galerry_select), getString(R.string.from_camera_select) };
+        CharSequence[] names = {getString(R.string.from_galerry_select), getString(R.string.from_camera_select)};
         new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_option))
                 .setItems(names, new DialogInterface.OnClickListener() {
@@ -301,4 +342,5 @@ public class GoalDetailActivity extends Activity {
         Intent loginScreen = new Intent(this, LoginActivity.class);
         startActivity(loginScreen);
     }
+
 }
