@@ -28,6 +28,7 @@ import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
@@ -78,12 +79,17 @@ public class GoalDetailActivity extends Activity {
         this.mGoalTitle.setText(mGoal.getTitle());
         this.mGoalDescription.setText(mGoal.getDescription());
 
-        Bitmap cover = LoggedUser.getInstance().getPictureById(this.mGoal.getCover());
+        UUID goalCoverId = this.mGoal.getCover();
 
-        if (cover == null) {
-            downloadGoalCover();
-        } else {
-            mGoalCover.setImageBitmap(cover);
+        if (goalCoverId != null) {
+
+            Bitmap cover = LoggedUser.getInstance().getPictureById(goalCoverId);
+
+            if (cover == null) {
+                downloadGoalCover();
+            } else {
+                mGoalCover.setImageBitmap(cover);
+            }
         }
     }
 
@@ -208,12 +214,15 @@ public class GoalDetailActivity extends Activity {
                         public void invoke(RequestResult requestResult) {
                             if (requestResult.getSuccess()) {
                                 //Delete old cover from db
-                                RemoteDbManager.getInstance().deleteImageById(oldId.toString());
+                                if (oldId != null) {
+                                    RemoteDbManager.getInstance().deleteImageById(oldId.toString());
+                                }
 
                                 GoalDetailActivity.this.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Bitmap newGoalCover = BitmapFactory.decodeStream(stream);
+                                        BufferedInputStream bis = new BufferedInputStream(stream, 8192);
+                                        Bitmap newGoalCover = BitmapFactory.decodeStream(bis);
                                         mGoalCover.setImageBitmap(newGoalCover);
                                     }
                                 });

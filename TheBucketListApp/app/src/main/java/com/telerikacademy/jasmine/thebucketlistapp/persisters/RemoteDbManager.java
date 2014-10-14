@@ -203,10 +203,6 @@ public class RemoteDbManager {
                 executeAsync();
     }
 
-    public RequestResult downloadPicture(String pictureId) {
-        return this.everlive.workWith().files().getById(pictureId).executeSync();
-    }
-
     public void downloadPicture(String pictureId, RequestResultCallbackAction callbackAction) {
         this.everlive.workWith().
                 files().
