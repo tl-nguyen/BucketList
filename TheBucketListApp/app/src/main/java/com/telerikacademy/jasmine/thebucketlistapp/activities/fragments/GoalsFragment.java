@@ -3,10 +3,8 @@ package com.telerikacademy.jasmine.thebucketlistapp.activities.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,7 +19,6 @@ import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.activities.GoalDetailActivity;
-import com.telerikacademy.jasmine.thebucketlistapp.activities.MainActivity;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
@@ -30,11 +26,9 @@ import com.telerikacademy.jasmine.thebucketlistapp.utils.GoalAdapter;
 
 import java.util.ArrayList;
 
-public class GoalsFragment extends Fragment implements View.OnClickListener,
-        AdapterView.OnItemClickListener,
+public class GoalsFragment extends Fragment implements AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener{
 
-    private ImageButton mCameraBtn;
     private ListView mGoalListView;
     private View mRootView;
     private Menu mMenu;
@@ -45,13 +39,7 @@ public class GoalsFragment extends Fragment implements View.OnClickListener,
         return goalAdapter;
     }
 
-    private void startCamera() {
-        Intent camera = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
-        this.startActivityForResult(camera, 100);
-    }
-
     private void initializeComponents () {
-        this.mCameraBtn = (ImageButton) mRootView.findViewById(R.id.btnCamera);
         this.mGoalListView = (ListView) mRootView.findViewById(R.id.lvGoals);
 
         this.goalAdapter = new GoalAdapter(this.getActivity(), R.layout.fragment_list_row_goal, LoggedUser.getInstance().getGoals());
@@ -62,8 +50,6 @@ public class GoalsFragment extends Fragment implements View.OnClickListener,
 
         this.mGoalListView.setOnItemClickListener(this);
         this.mGoalListView.setOnItemLongClickListener(this);
-
-        this.mCameraBtn.setOnClickListener(this);
     }
 
     private void loadGoals(final ListView listView, final Activity activity, final GoalsFragment goalsFragment) {
@@ -97,16 +83,6 @@ public class GoalsFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == MainActivity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap photo = (Bitmap) extras.get("data");
-            //TODO: handling the taken photo
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -128,13 +104,6 @@ public class GoalsFragment extends Fragment implements View.OnClickListener,
             menu.findItem(R.id.action_delete).setVisible(false);
         }
         this.mMenu = menu;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.btnCamera) {
-            startCamera();
-        }
     }
 
     @Override

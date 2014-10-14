@@ -138,7 +138,7 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    showAlert(activity, getString(R.string.success_set_idea_as_goal));
+                                    showAlert(activity, String.format(getString(R.string.success_set_idea_as_goal), selectedIdea.getTitle()));
 
                                     mIdeaListView.post(new Runnable() {
                                         @Override
@@ -182,11 +182,5 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
 
     private void showAlert(Context context, String text) {
         Toast.makeText(context, text, Toast.LENGTH_LONG).show();
-    }
-
-    private void startGoalScreen() {
-        Intent goalsScreen = new Intent(mRootView.getContext(), MainActivity.class);
-        goalsScreen.putExtra(getString(R.string.FRAGMENT), getResources().getInteger(R.integer.GOALS_FRAGMENT));
-        this.startActivity(goalsScreen);
     }
 }
