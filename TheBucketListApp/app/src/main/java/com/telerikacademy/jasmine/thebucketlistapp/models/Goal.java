@@ -14,11 +14,16 @@ import java.util.UUID;
 @ServerType("Goals")
 public class Goal extends DataItem {
 
+    public Goal() {
+        this.selected = false;
+        this.pictures = new ArrayList<UUID>();
+    }
+
     public Goal(String title, String description, UUID ideaId) {
+        this();
         this.title = title;
         this.description = description;
         this.ideaId = ideaId;
-        this.selected = false;
     }
 
     @ServerProperty("Title")
