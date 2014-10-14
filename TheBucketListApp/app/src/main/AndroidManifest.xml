@@ -33,6 +33,10 @@
             android:name=".activities.GoalDetailActivity"
             android:label="@string/title_activity_goal_detail" >
         </activity>
+        <provider
+            android:name=".SQLiteContentProvider"
+            android:authorities="com.telerikacademy.jasmine.thebucketlistapp.contentprovider" >
+        </provider>
     </application>
 
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
@@ -41,7 +45,6 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
