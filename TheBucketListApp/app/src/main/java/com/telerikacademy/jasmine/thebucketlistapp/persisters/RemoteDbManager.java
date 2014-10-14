@@ -1,10 +1,7 @@
 package com.telerikacademy.jasmine.thebucketlistapp.persisters;
 
-import android.graphics.Bitmap;
-
 import com.telerik.everlive.sdk.core.EverliveApp;
 import com.telerik.everlive.sdk.core.model.system.User;
-import com.telerik.everlive.sdk.core.query.definition.FileField;
 import com.telerik.everlive.sdk.core.query.definition.UserSecretInfo;
 import com.telerik.everlive.sdk.core.query.definition.filtering.Condition;
 import com.telerik.everlive.sdk.core.query.definition.filtering.array.ArrayCondition;
@@ -15,17 +12,11 @@ import com.telerik.everlive.sdk.core.query.definition.filtering.simple.ValueCond
 import com.telerik.everlive.sdk.core.query.definition.filtering.simple.ValueConditionOperator;
 import com.telerik.everlive.sdk.core.query.definition.sorting.SortDirection;
 import com.telerik.everlive.sdk.core.query.definition.sorting.SortingDefinition;
-import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +24,6 @@ public class RemoteDbManager {
     private static RemoteDbManager instance;
 
     private EverliveApp everlive;
-
-    private SecureRandom random = new SecureRandom();
 
     private RemoteDbManager() {
     }
@@ -165,8 +154,8 @@ public class RemoteDbManager {
                 executeAsync(callbackAction);
     }
 
-    public void updateGoalToCompleted(Goal goal, RequestResultCallbackAction callbackAction) {
-        Goal updatedGoal = new Goal();
+    public void updateGoal(Goal goal, RequestResultCallbackAction callbackAction) {
+        Goal updatedGoal = new Goal(goal.getTitle(), goal.getDescription(), goal.getIdeaId());
         updatedGoal.setDone(goal.isDone());
 
         this.everlive.
@@ -174,28 +163,5 @@ public class RemoteDbManager {
                 data(Goal.class).
                 updateById(goal.getId(), updatedGoal).
                 executeAsync(callbackAction);
-    }
-
-    public void updateGoalPictures(Goal goal, RequestResultCallbackAction callbackAction) {
-        Goal updatedGoal = new Goal();
-        updatedGoal.setPictures(goal.getPictures());
-
-        this.everlive.
-                workWith().
-                data(Goal.class).
-                updateById(goal.getId(), updatedGoal).
-                executeAsync(callbackAction);
-    }
-
-    public void uploadImage(InputStream inputStream, RequestResultCallbackAction callbackAction) {
-        String fileName = new BigInteger(130, random).toString(32) + ".jpg";
-        String contentType = "image/jpeg";
-
-        FileField fileField = new FileField(fileName, contentType, inputStream);
-        this.everlive.workWith().files().upload(fileField).executeAsync(callbackAction);
-    }
-
-    public RequestResult downloadPicture(String pictureId) {
-        return this.everlive.workWith().files().getById(pictureId).executeSync();
     }
 }
