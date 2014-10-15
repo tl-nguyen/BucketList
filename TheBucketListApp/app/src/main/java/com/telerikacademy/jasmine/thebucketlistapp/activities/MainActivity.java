@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.telerikacademy.jasmine.thebucketlistapp.R;
+import com.telerikacademy.jasmine.thebucketlistapp.persisters.LoginSettingsManager;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 import com.telerikacademy.jasmine.thebucketlistapp.utils.SectionsPagerAdapter;
 
@@ -104,6 +105,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             Intent editProfileScreen = new Intent(this, ProfileActivity.class);
             startActivity(editProfileScreen);
         } else if (id == R.id.action_logout) {
+            LoginSettingsManager.getInstance().setSharedPreferences(getSharedPreferences(getString(R.string.sharedPreferencesName), 0));
+            LoginSettingsManager.getInstance().resetSettings();
             RemoteDbManager.getInstance().logout();
 
             Intent loginScreen = new Intent(this, LoginActivity.class);

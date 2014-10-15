@@ -16,6 +16,7 @@ import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
+import com.telerikacademy.jasmine.thebucketlistapp.persisters.LoginSettingsManager;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 
 import java.util.UUID;
@@ -63,6 +64,8 @@ public class NewGoalActivity extends Activity {
         } else if (id == R.id.action_save) {
             saveGoal();
         } else if (id == R.id.action_logout) {
+            LoginSettingsManager.getInstance().setSharedPreferences(getSharedPreferences(getString(R.string.sharedPreferencesName), 0));
+            LoginSettingsManager.getInstance().resetSettings();
             RemoteDbManager.getInstance().logout();
 
             Intent loginScreen = new Intent(this, LoginActivity.class);

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.telerikacademy.jasmine.thebucketlistapp.R;
+import com.telerikacademy.jasmine.thebucketlistapp.persisters.LoginSettingsManager;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 
 public class ProfileActivity extends Activity {
@@ -37,6 +38,8 @@ public class ProfileActivity extends Activity {
         } else if (id == R.id.action_editProfile) {
             return true;
         } else if (id == R.id.action_logout) {
+            LoginSettingsManager.getInstance().setSharedPreferences(getSharedPreferences(getString(R.string.sharedPreferencesName), 0));
+            LoginSettingsManager.getInstance().resetSettings();
             RemoteDbManager.getInstance().logout();
 
             Intent loginScreen = new Intent(this, LoginActivity.class);

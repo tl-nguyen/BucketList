@@ -1,6 +1,8 @@
 package com.telerikacademy.jasmine.thebucketlistapp.persisters;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 
 import com.telerik.everlive.sdk.core.EverliveApp;
 import com.telerik.everlive.sdk.core.model.system.User;

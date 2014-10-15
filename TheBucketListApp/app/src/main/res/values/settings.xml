@@ -2,6 +2,7 @@
 <resources>
 
     <string name="backendServicesApiKey">XDVyheKygbljQ7sG</string>
+    <string name="sharedPreferencesName">loginSettings</string>
     <string name="defaultUsername">tlnguyen</string>
     <string name="defaultPassword">tlnguyen</string>
 

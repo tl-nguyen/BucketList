@@ -53,5 +53,6 @@
     <string name="from_galerry_select">From Gallery</string>
     <string name="from_camera_select">From Camera</string>
     <string name="shake_for_random">SHAKE!!!</string>
+    <string name="remember_me">Remember Me</string>
 
 </resources>

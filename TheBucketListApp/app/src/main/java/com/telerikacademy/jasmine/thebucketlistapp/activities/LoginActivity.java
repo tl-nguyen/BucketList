@@ -5,8 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,6 +16,7 @@ import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.query.definition.UserSecretInfo;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
+import com.telerikacademy.jasmine.thebucketlistapp.persisters.LoginSettingsManager;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 import com.telerikacademy.jasmine.thebucketlistapp.tasks.LoginRequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.tasks.RegisterRequestResultCallBackAction;
@@ -25,6 +28,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private ProgressDialog progressDialog;
     private Button btnLogin;
     private Button btnRegister;
+    private CheckBox rememberMe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.login);
 
         RemoteDbManager.getInstance().setEverlive(getString(R.string.backendServicesApiKey));
+        LoginSettingsManager.getInstance().setSharedPreferences(getSharedPreferences(getString(R.string.sharedPreferencesName), 0));
 
         this.progressDialog = new ProgressDialog(this);
 
@@ -39,6 +44,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         this.password = (EditText) findViewById(R.id.etPassword);
         this.btnLogin = (Button) findViewById(R.id.btnLogin);
         this.btnRegister = (Button) findViewById(R.id.btnRegister);
+        this.rememberMe = (CheckBox) findViewById(R.id.cbRememberMe);
 
         this.btnLogin.setOnClickListener(this);
         this.btnRegister.setOnClickListener(this);
@@ -62,6 +68,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin : {
+                LoginSettingsManager.getInstance().
+                        putSettings(this.rememberMe.isChecked(),
+                                this.username.getText().toString());
                 this.login();
                 break;
             }
@@ -119,5 +128,13 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         RemoteDbManager.getInstance().login(userName,
                 password,
                 new LoginRequestResultCallbackAction(this, this.progressDialog));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        Log.d("BucketList", String.valueOf(LoginSettingsManager.getInstance().getRememberMe()));
+        Log.d("BucketList", String.valueOf(LoginSettingsManager.getInstance().getCurrentUser()));
     }
 }
