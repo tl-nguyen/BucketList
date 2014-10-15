@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +54,12 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
 
         initializeComponents();
 
+        initializeShakeDetectorComponents();
+
+        return this.mRootView;
+    }
+
+    private void initializeShakeDetectorComponents() {
         mSensorManager = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -71,16 +76,12 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
                 showIdeaSelectorDialog(random.nextInt(LoggedUser.getInstance().getIdeas().size()), mActivity, true);
             }
         });
-
-
-
-        return this.mRootView;
     }
 
     @Override
-    public void onStop() {
+    public void onPause() {
         mSensorManager.unregisterListener(mShakeDetector);
-        super.onStop();
+        super.onPause();
     }
 
     private void initializeComponents () {

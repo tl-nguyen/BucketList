@@ -10,7 +10,8 @@
         <activity
             android:name=".activities.LoginActivity"
             android:configChanges="orientation"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,19 +20,23 @@
         </activity>
         <activity
             android:name=".activities.MainActivity"
-            android:label="@string/txtTitle" >
+            android:label="@string/txtTitle"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.NewGoalActivity"
-            android:label="@string/txtTitleNewGoal" >
+            android:label="@string/txtTitleNewGoal"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.ProfileActivity"
-            android:label="@string/txtTitleProfile" >
+            android:label="@string/txtTitleProfile"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activities.GoalDetailActivity"
-            android:label="@string/title_activity_goal_detail" >
+            android:label="@string/title_activity_goal_detail"
+            android:screenOrientation="portrait" >
         </activity>
         <provider
             android:name=".persisters.SQLiteContentProvider"
