@@ -8,11 +8,32 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.telerikacademy.jasmine.thebucketlistapp.activities.MainActivity$PlaceholderFragment">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/shake_for_random"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/tvShakeInfo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"/>
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lvGoals"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true" />
+        android:layout_below="@+id/tvShakeInfo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dice"
+        android:id="@+id/imageView"
+        android:layout_above="@+id/lvGoals"
+        android:layout_toLeftOf="@+id/tvShakeInfo"
+        android:layout_toStartOf="@+id/tvShakeInfo"
+        android:layout_marginBottom="20dp"/>
 
 </RelativeLayout>

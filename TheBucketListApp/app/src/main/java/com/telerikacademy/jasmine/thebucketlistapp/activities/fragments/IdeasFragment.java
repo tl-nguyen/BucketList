@@ -2,12 +2,13 @@ package com.telerikacademy.jasmine.thebucketlistapp.activities.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,20 +21,28 @@ import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
-import com.telerikacademy.jasmine.thebucketlistapp.activities.MainActivity;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 import com.telerikacademy.jasmine.thebucketlistapp.utils.IdeaAdapter;
+import com.telerikacademy.jasmine.thebucketlistapp.utils.ShakeDetector;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class IdeasFragment extends Fragment implements AdapterView.OnItemClickListener {
     private ListView mIdeaListView;
     private View mRootView;
 
     private IdeaAdapter ideaAdapter;
+
+    // The following are used for the shake detection
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+
+    private Activity mActivity = this.getActivity();
 
     public IdeaAdapter getIdeaAdapter() {
         return ideaAdapter;
@@ -46,7 +55,32 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
 
         initializeComponents();
 
+        mSensorManager = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                Random random = new Random();
+
+                showIdeaSelectorDialog(random.nextInt(LoggedUser.getInstance().getIdeas().size()), mActivity, true);
+            }
+        });
+
+
+
         return this.mRootView;
+    }
+
+    @Override
+    public void onStop() {
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onStop();
     }
 
     private void initializeComponents () {
@@ -113,10 +147,13 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+        showIdeaSelectorDialog(position, this.getActivity(), false);
+    }
+
+    private void showIdeaSelectorDialog(final int position, final Activity activity, final boolean onShake) {
         LayoutInflater inflater = LayoutInflater.from(this.getActivity());
         View alertView = inflater.inflate(R.layout.idea_detail, null);
         final Idea selectedIdea = LoggedUser.getInstance().getIdeas().get(position);
-        final Activity activity = this.getActivity();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
         builder.setView(alertView);
@@ -135,26 +172,37 @@ public class IdeasFragment extends Fragment implements AdapterView.OnItemClickLi
                         if (requestResult.getSuccess()) {
                             LoggedUser.getInstance().getIdeas().remove(position);
 
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showAlert(activity, String.format(getString(R.string.success_set_idea_as_goal), selectedIdea.getTitle()));
+                            if (!onShake) {
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showAlert(activity, String.format(getString(R.string.success_set_idea_as_goal), selectedIdea.getTitle()));
 
-                                    mIdeaListView.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            IdeasFragment.this.getIdeaAdapter().notifyDataSetChanged();
-                                        }
-                                    });
-                                }
-                            });
+                                        mIdeaListView.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                IdeasFragment.this.getIdeaAdapter().notifyDataSetChanged();
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                mIdeaListView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        IdeasFragment.this.getIdeaAdapter().notifyDataSetChanged();
+                                    }
+                                });
+                            }
                         } else {
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showAlert(activity, requestResult.getError().toString());
-                                }
-                            });
+                            if (!onShake) {
+                                activity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showAlert(activity, requestResult.getError().toString());
+                                    }
+                                });
+                            }
                         }
                     }
                 });

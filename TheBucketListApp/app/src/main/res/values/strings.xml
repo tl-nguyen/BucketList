@@ -52,5 +52,6 @@
     <string name="select_option">Select an option</string>
     <string name="from_galerry_select">From Gallery</string>
     <string name="from_camera_select">From Camera</string>
+    <string name="shake_for_random">SHAKE!!!</string>
 
 </resources>
