@@ -24,6 +24,7 @@ import com.telerik.everlive.sdk.core.model.system.File;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
+import com.telerikacademy.jasmine.thebucketlistapp.models.Brag;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
@@ -161,10 +162,36 @@ public class GoalDetailActivity extends Activity {
         } else if (id == R.id.set_as_completed) {
             setAsCompleted();
         } else if (id == R.id.brag) {
-            //TODO: brag about this archivement
+            makeABrag();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void makeABrag() {
+        Brag newBrag = new Brag(mGoal.getTitle(), mGoal.getDescription(), mGoal.getId());
+
+        if (mGoal.getCover() != null) {
+            newBrag.setCover(mGoal.getCover());
+        }
+
+        RemoteDbManager.getInstance().createBrag(newBrag, new RequestResultCallbackAction() {
+            @Override
+            public void invoke(RequestResult requestResult) {
+                if (requestResult.getSuccess()) {
+                    GoalDetailActivity.this.runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            showAlert(GoalDetailActivity.this, "yeah, you just bragged about your achievement");
+                        }
+
+                    });
+                } else {
+                    processError(requestResult);
+                }
+            }
+        });
     }
 
     @Override
@@ -352,4 +379,16 @@ public class GoalDetailActivity extends Activity {
         startActivity(loginScreen);
     }
 
+    private void processError(RequestResult requestResult) {
+        final String errorMessage = requestResult.getError().getMessage();
+
+        GoalDetailActivity.this.runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                showAlert(GoalDetailActivity.this, errorMessage);
+            }
+
+        });
+    }
 }

@@ -18,6 +18,8 @@ public class LoggedUser {
 
     private List<Idea> ideas;
 
+    private List<Brag> brags;
+
     private Hashtable<UUID, Bitmap> pictures;
 
     public void setLoggedUser(User loggedUser) {
@@ -36,6 +38,10 @@ public class LoggedUser {
         return ideas;
     }
 
+    public List<Brag> getBrags() {
+        return brags;
+    }
+
     public void addPicture(UUID id, Bitmap image) {
         this.pictures.put(id, image);
     }
@@ -47,6 +53,7 @@ public class LoggedUser {
     private LoggedUser() {
         this.goals = new ArrayList<Goal>();
         this.ideas = new ArrayList<Idea>();
+        this.brags = new ArrayList<Brag>();
         this.pictures = new Hashtable<UUID, Bitmap>();
     }
 

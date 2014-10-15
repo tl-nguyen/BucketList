@@ -17,6 +17,7 @@ import com.telerik.everlive.sdk.core.query.definition.sorting.SortDirection;
 import com.telerik.everlive.sdk.core.query.definition.sorting.SortingDefinition;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
+import com.telerikacademy.jasmine.thebucketlistapp.models.Brag;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
@@ -141,6 +142,32 @@ public class RemoteDbManager {
                 sort(sortDesc).
                 executeAsync(callbackAction);
     }
+
+    public void retrieveBrags(RequestResultCallbackAction<ArrayList<Brag>> callbackAction) {
+        SortingDefinition sortDesc = new SortingDefinition("CreatedAt", SortDirection.Descending);
+
+        this.everlive.workWith().
+                data(Brag.class).
+                get().
+                sort(sortDesc).
+                executeAsync(callbackAction);
+    }
+
+    public void getBragOwner(final Brag brag, RequestResultCallbackAction callbackAction) {
+        this.everlive.
+                workWith().
+                users().
+                getById(brag.getOwner()).
+                executeAsync(callbackAction);
+    }
+
+    public void createBrag(Brag brag, RequestResultCallbackAction callbackAction) {
+        this.everlive.workWith().
+                data(Brag.class).
+                create(brag).
+                executeAsync(callbackAction);
+    }
+
 
     public void deleteGoals(RequestResultCallbackAction callbackAction) {
         List<String> goalIdsToBeDeleted = new ArrayList<String>();
