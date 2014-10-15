@@ -16,8 +16,10 @@ import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.query.definition.UserSecretInfo;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
+import com.telerikacademy.jasmine.thebucketlistapp.models.SQLiteUser;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.LoginSettingsManager;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
+import com.telerikacademy.jasmine.thebucketlistapp.persisters.SQLiteDBPref;
 import com.telerikacademy.jasmine.thebucketlistapp.tasks.LoginRequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.tasks.RegisterRequestResultCallBackAction;
 
@@ -30,6 +32,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private Button btnRegister;
     private CheckBox rememberMe;
 
+    private SQLiteDBPref dbPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +41,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         RemoteDbManager.getInstance().setEverlive(getString(R.string.backendServicesApiKey));
         LoginSettingsManager.getInstance().setSharedPreferences(getSharedPreferences(getString(R.string.sharedPreferencesName), 0));
+
+        dbPref = new SQLiteDBPref(this.getApplicationContext());
 
         this.progressDialog = new ProgressDialog(this);
 
@@ -53,6 +59,16 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         this.password.setText(getResources().getString(R.string.defaultPassword));
     }
 
+    private void autoLoginHandle() {
+        if (LoginSettingsManager.getInstance().getRememberMe()) {
+            String username = LoginSettingsManager.getInstance().getCurrentUser();
+
+            SQLiteUser user = dbPref.findUser(username);
+
+            login(user.getUsername(), user.getPassword());
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -61,6 +77,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         if (loggedUser != null) {
             LoginActivity.startMainActivity(this);
+        } else {
+            autoLoginHandle();
         }
     }
 
@@ -68,10 +86,20 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin : {
-                LoginSettingsManager.getInstance().
-                        putSettings(this.rememberMe.isChecked(),
-                                this.username.getText().toString());
-                this.login();
+                String userName = this.username.getText().toString();
+                String password = this.password.getText().toString();
+
+                LoginSettingsManager.
+                        getInstance().
+                        putSettings(this.rememberMe.isChecked(), userName);
+
+                if (dbPref.userExist(userName)) {
+                    dbPref.updateRecord(userName, password);
+                } else {
+                    dbPref.addRecord(userName, password);
+                }
+
+                this.login(userName, password);
                 break;
             }
             case R.id.btnRegister :  {
@@ -118,12 +146,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 new RegisterRequestResultCallBackAction(this, this.progressDialog));
     }
 
-    private void login() {
+    private void login(String userName, String password) {
         this.progressDialog.setMessage(this.getResources().getString(R.string.dialogLogin));
         this.progressDialog.show();
-
-        String userName = this.username.getText().toString();
-        String password = this.password.getText().toString();
 
         RemoteDbManager.getInstance().login(userName,
                 password,

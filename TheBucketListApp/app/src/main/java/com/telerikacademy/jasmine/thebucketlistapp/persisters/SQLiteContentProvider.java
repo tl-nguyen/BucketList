@@ -3,18 +3,18 @@ package com.telerikacademy.jasmine.thebucketlistapp.persisters;
 /**
  * Created by Boyko on 14.10.2014 г..
  */
-        import java.util.Arrays;
-        import java.util.HashSet;
+import java.util.Arrays;
+import java.util.HashSet;
 
-        import android.content.ContentProvider;
-        import android.content.ContentResolver;
-        import android.content.ContentValues;
-        import android.content.UriMatcher;
-        import android.database.Cursor;
-        import android.database.sqlite.SQLiteDatabase;
-        import android.database.sqlite.SQLiteQueryBuilder;
-        import android.net.Uri;
-        import android.text.TextUtils;
+import android.content.ContentProvider;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.UriMatcher;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
+import android.net.Uri;
+import android.text.TextUtils;
 
 public class SQLiteContentProvider extends ContentProvider {
 

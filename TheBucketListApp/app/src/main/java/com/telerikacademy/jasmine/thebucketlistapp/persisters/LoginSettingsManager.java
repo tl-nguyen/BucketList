@@ -3,6 +3,9 @@ package com.telerikacademy.jasmine.thebucketlistapp.persisters;
 import android.content.SharedPreferences;
 
 public class LoginSettingsManager {
+    private static final String REMEMBER_ME = "remember_me";
+    private static final String CURRENT_USER = "current_user";
+
     private static LoginSettingsManager instance;
 
     private SharedPreferences sharedPreferences;
@@ -26,28 +29,28 @@ public class LoginSettingsManager {
 
     public void putSettings(boolean rememberMe, String currentUser) {
 
-        editor.putBoolean("remember_me", rememberMe);
-        editor.putString("current_user", currentUser);
+        editor.putBoolean(REMEMBER_ME, rememberMe);
+        editor.putString(CURRENT_USER, currentUser);
 
         editor.commit();
     }
 
     public void resetSettings() {
 
-        editor.putBoolean("remember_me", false);
-        editor.putString("current_user", null);
+        editor.putBoolean(REMEMBER_ME, false);
+        editor.putString(CURRENT_USER, null);
 
         editor.commit();
     }
 
     public String getCurrentUser() {
-        String currentUser = sharedPreferences.getString("current_user", null);
+        String currentUser = sharedPreferences.getString(CURRENT_USER, null);
 
         return currentUser;
     }
 
     public boolean getRememberMe() {
-        boolean rememberMe = sharedPreferences.getBoolean("remember_me", false);
+        boolean rememberMe = sharedPreferences.getBoolean(REMEMBER_ME, false);
 
         return rememberMe;
     }
