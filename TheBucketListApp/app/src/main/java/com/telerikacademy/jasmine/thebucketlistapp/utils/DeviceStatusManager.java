@@ -13,11 +13,11 @@ import android.os.Environment;
 /**
  * Created by Boyko on 14.10.2014 г..
  */
-public class Connections {
+public class DeviceStatusManager {
     private Context mcontext;
     private Boolean sdCardAvailable, sdCardWriteable;
 
-    public Connections(Context context){
+    public DeviceStatusManager(Context context){
         this.mcontext = context;
     }
 

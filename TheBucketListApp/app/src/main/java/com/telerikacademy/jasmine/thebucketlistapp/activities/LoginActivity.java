@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,6 +21,7 @@ import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.SQLiteDBPref;
 import com.telerikacademy.jasmine.thebucketlistapp.tasks.LoginRequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.tasks.RegisterRequestResultCallBackAction;
+import com.telerikacademy.jasmine.thebucketlistapp.utils.DeviceStatusManager;
 
 public class LoginActivity extends Activity implements View.OnClickListener{
 
@@ -32,7 +32,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private Button btnRegister;
     private CheckBox rememberMe;
 
-    private SQLiteDBPref dbPref;
+    private SQLiteDBPref sqliteDbPref;
+    private DeviceStatusManager statusManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         RemoteDbManager.getInstance().setEverlive(getString(R.string.backendServicesApiKey));
         LoginSettingsManager.getInstance().setSharedPreferences(getSharedPreferences(getString(R.string.sharedPreferencesName), 0));
 
-        dbPref = new SQLiteDBPref(this.getApplicationContext());
+        sqliteDbPref = new SQLiteDBPref(this.getApplicationContext());
+        statusManager = new DeviceStatusManager(this.getApplicationContext());
 
         this.progressDialog = new ProgressDialog(this);
 
@@ -63,7 +65,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         if (LoginSettingsManager.getInstance().getRememberMe()) {
             String username = LoginSettingsManager.getInstance().getCurrentUser();
 
-            SQLiteUser user = dbPref.findUser(username);
+            SQLiteUser user = sqliteDbPref.findUser(username);
 
             login(user.getUsername(), user.getPassword());
         }
@@ -72,13 +74,20 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onResume() {
         super.onResume();
+        Boolean isConnectedToInternet = statusManager.isInternetConnected();
+        if (!isConnectedToInternet) {
+            showAlert(this, "You're not connected to the internet.\n" +
+                    "Bucket List needs an internet connection.\n\n" + "" +
+                    "Please, connect to the internet first");
+        }
+        else {
+            final User loggedUser = LoggedUser.getInstance().getLoggedUser();
 
-        final User loggedUser = LoggedUser.getInstance().getLoggedUser();
-
-        if (loggedUser != null) {
-            LoginActivity.startMainActivity(this);
-        } else {
-            autoLoginHandle();
+            if (loggedUser != null) {
+                LoginActivity.startMainActivity(this);
+            } else {
+                autoLoginHandle();
+            }
         }
     }
 
@@ -93,10 +102,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                         getInstance().
                         putSettings(this.rememberMe.isChecked(), userName);
 
-                if (dbPref.userExist(userName)) {
-                    dbPref.updateRecord(userName, password);
-                } else {
-                    dbPref.addRecord(userName, password);
+                if (!sqliteDbPref.userExist(userName)) {
+                    sqliteDbPref.addRecord(userName, password);
                 }
 
                 this.login(userName, password);
@@ -153,13 +160,5 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         RemoteDbManager.getInstance().login(userName,
                 password,
                 new LoginRequestResultCallbackAction(this, this.progressDialog));
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        Log.d("BucketList", String.valueOf(LoginSettingsManager.getInstance().getRememberMe()));
-        Log.d("BucketList", String.valueOf(LoginSettingsManager.getInstance().getCurrentUser()));
     }
 }
