@@ -56,9 +56,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
         this.btnLogin.setOnClickListener(this);
         this.btnRegister.setOnClickListener(this);
-
-        this.username.setText(getResources().getString(R.string.defaultUsername));
-        this.password.setText(getResources().getString(R.string.defaultPassword));
     }
 
     private void autoLoginHandle() {

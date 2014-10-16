@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,19 +58,21 @@ public class GoalsFragment extends Fragment implements AdapterView.OnItemClickLi
 
             @Override
             public void invoke(final RequestResult<ArrayList<Goal>> requestResult) {
-
                 if (requestResult.getSuccess()) {
-                    LoggedUser.getInstance().getGoals().clear();
-                    for (Goal goal : requestResult.getValue()) {
-                        LoggedUser.getInstance().getGoals().add(goal);
-                    }
-
-                    listView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            goalsFragment.getGoalAdapter().notifyDataSetChanged();
+                    try {
+                        LoggedUser.getInstance().getGoals().clear();
+                        for (Goal goal : requestResult.getValue()) {
+                            LoggedUser.getInstance().getGoals().add(goal);
                         }
-                    });
+                        listView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                goalsFragment.getGoalAdapter().notifyDataSetChanged();
+                            }
+                        });
+                    } catch (Exception e) {
+                        Log.d("BucketList", "something is really wrong with the post");
+                    }
                 } else {
                     activity.runOnUiThread(new Runnable() {
                         @Override
@@ -128,7 +131,6 @@ public class GoalsFragment extends Fragment implements AdapterView.OnItemClickLi
         int id = item.getItemId();
 
         if (id == R.id.action_delete) {
-
 
             RemoteDbManager.getInstance().deleteGoals(new RequestResultCallbackAction() {
                 @Override
