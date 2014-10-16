@@ -58,10 +58,9 @@ public class SQLiteDBPref extends SQLiteDBHelper {
             open();
 
             ContentValues values = new ContentValues();
-            values.put(SQLiteTables.COLUMN_Username, username);
             values.put(SQLiteTables.COLUMN_Password, password);
 
-            this.db.update(SQLiteTables.TABLE_Users, values, SQLiteTables.COLUMN_Username + " = " + username, null);
+            this.db.update(SQLiteTables.TABLE_Users, values, SQLiteTables.COLUMN_Username + "=?", new String[] {username});
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

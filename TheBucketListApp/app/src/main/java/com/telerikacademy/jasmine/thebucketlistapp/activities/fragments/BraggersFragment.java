@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +17,14 @@ import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Brag;
-import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 import com.telerikacademy.jasmine.thebucketlistapp.utils.BragAdapter;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-public class BraggersFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class BraggersFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private ListView mBragListView;
     private View mRootView;
@@ -67,6 +68,8 @@ public class BraggersFragment extends Fragment implements AdapterView.OnItemClic
                 if (requestResult.getSuccess()) {
                     LoggedUser.getInstance().getBrags().clear();
 
+                    LoggedUser.getInstance().setCurrentBragsCount(requestResult.getValue().size());
+
                     for (final Brag brag : requestResult.getValue()) {
 
                         RemoteDbManager.getInstance().getBragOwner(brag, new RequestResultCallbackAction<User>() {
@@ -108,7 +111,7 @@ public class BraggersFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        this.loadBrags(mBragListView, this.getActivity(), this);
     }
 
     private void showAlert(Context context, String text) {

@@ -101,6 +101,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
                 if (!sqliteDbPref.userExist(userName)) {
                     sqliteDbPref.addRecord(userName, password);
+                } else {
+                    sqliteDbPref.updateRecord(userName, password);
                 }
 
                 this.login(userName, password);

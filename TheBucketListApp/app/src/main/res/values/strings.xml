@@ -54,5 +54,6 @@
     <string name="from_camera_select">From Camera</string>
     <string name="shake_for_random">SHAKE!!!</string>
     <string name="remember_me">Remember Me</string>
+    <string name="new_brags_notification">There\'re some new brags, check them out ;)</string>
 
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="another_simple_notification_id" type="id" />
+    <item name="simple_notification_id" type="id" />
+    <item name="big_notification_id" type="id" />
+    <item name="important_notification_id" type="id" />
+</resources>

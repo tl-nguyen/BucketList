@@ -2,18 +2,22 @@ package com.telerikacademy.jasmine.thebucketlistapp.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.telerikacademy.jasmine.thebucketlistapp.R;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.LoginSettingsManager;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
+import com.telerikacademy.jasmine.thebucketlistapp.services.MainService;
 import com.telerikacademy.jasmine.thebucketlistapp.utils.SectionsPagerAdapter;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
@@ -32,6 +36,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private Intent mServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +82,21 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                                 .setTabListener(this));
             }
         }
+
+        //Start service for brags
+        StartServiceFroBrags();
+    }
+
+    private void StartServiceFroBrags() {
+        final long ALARM_TRIGGER_AT_TIME = SystemClock.elapsedRealtime() + 20000;
+
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+        Intent myIntent = new Intent(MainActivity.this, MainService.class);
+
+        PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, myIntent, 0);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, ALARM_TRIGGER_AT_TIME, 10000,pendingIntent);
     }
 
     @Override
@@ -86,6 +106,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         int data = getIntent().getIntExtra(getString(R.string.FRAGMENT), 0);
 
         mViewPager.setCurrentItem(data);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.stopService(this.mServiceIntent);
     }
 
     @Override

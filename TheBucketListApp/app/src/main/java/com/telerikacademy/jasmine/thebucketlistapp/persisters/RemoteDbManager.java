@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -151,6 +152,18 @@ public class RemoteDbManager {
         this.everlive.workWith().
                 data(Brag.class).
                 get().
+                sort(sortDesc).
+                executeAsync(callbackAction);
+    }
+
+    public void retrieveBragsByDate(Date lastBragsFetch, RequestResultCallbackAction<ArrayList<Brag>> callbackAction) {
+        SortingDefinition sortDesc = new SortingDefinition("CreatedAt", SortDirection.Descending);
+        Condition dateCondition = new ValueCondition("CreatedAt", lastBragsFetch, ValueConditionOperator.GreaterThanOrEqualTo);
+
+        this.everlive.workWith().
+                data(Brag.class).
+                get().
+                where(dateCondition).
                 sort(sortDesc).
                 executeAsync(callbackAction);
     }

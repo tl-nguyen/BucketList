@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import com.telerik.everlive.sdk.core.model.system.User;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +22,8 @@ public class LoggedUser {
     private List<Brag> brags;
 
     private Hashtable<UUID, Bitmap> pictures;
+
+    private int currentBragsCount;
 
     public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
@@ -55,6 +58,7 @@ public class LoggedUser {
         this.ideas = new ArrayList<Idea>();
         this.brags = new ArrayList<Brag>();
         this.pictures = new Hashtable<UUID, Bitmap>();
+        this.currentBragsCount = -1;
     }
 
     public static LoggedUser getInstance() {
@@ -62,5 +66,13 @@ public class LoggedUser {
             instance = new LoggedUser();
         }
         return instance;
+    }
+
+    public int getCurrentBragsCount() {
+        return currentBragsCount;
+    }
+
+    public void setCurrentBragsCount(int currentBragsCount) {
+        this.currentBragsCount = currentBragsCount;
     }
 }
