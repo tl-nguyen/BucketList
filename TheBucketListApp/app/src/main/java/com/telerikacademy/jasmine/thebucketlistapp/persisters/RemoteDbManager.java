@@ -1,9 +1,5 @@
 package com.telerikacademy.jasmine.thebucketlistapp.persisters;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.preference.PreferenceManager;
-
 import com.telerik.everlive.sdk.core.EverliveApp;
 import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.query.definition.FileField;
@@ -17,22 +13,18 @@ import com.telerik.everlive.sdk.core.query.definition.filtering.simple.ValueCond
 import com.telerik.everlive.sdk.core.query.definition.filtering.simple.ValueConditionOperator;
 import com.telerik.everlive.sdk.core.query.definition.sorting.SortDirection;
 import com.telerik.everlive.sdk.core.query.definition.sorting.SortingDefinition;
-import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Brag;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
 import com.telerikacademy.jasmine.thebucketlistapp.models.Idea;
 import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class RemoteDbManager {
     private static RemoteDbManager instance;

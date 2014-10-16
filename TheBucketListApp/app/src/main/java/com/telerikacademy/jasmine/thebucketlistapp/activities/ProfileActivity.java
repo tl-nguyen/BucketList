@@ -6,12 +6,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.telerikacademy.jasmine.thebucketlistapp.R;
+import com.telerikacademy.jasmine.thebucketlistapp.models.Goal;
+import com.telerikacademy.jasmine.thebucketlistapp.models.LoggedUser;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.LoginSettingsManager;
 import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 
 public class ProfileActivity extends Activity {
+
+    private TextView mDisplayName;
+    private TextView mUserName;
+    private TextView mEmail;
+    private TextView mProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +30,34 @@ public class ProfileActivity extends Activity {
         if (actionbar != null) {
             actionbar.setDisplayHomeAsUpEnabled(true);
         }
+
+        mDisplayName = (TextView) findViewById(R.id.tvGreeting);
+        mUserName = (TextView) findViewById(R.id.tvUsername);
+        mEmail = (TextView) findViewById(R.id.tvEmail);
+        mProgress = (TextView) findViewById(R.id.tvProgress);
+
+        String displayName = LoggedUser.getInstance().getLoggedUser().getDisplayName();
+        String userName = LoggedUser.getInstance().getLoggedUser().getUsername();
+        String email = LoggedUser.getInstance().getLoggedUser().getEmail() == null ? "" : LoggedUser.getInstance().getLoggedUser().getEmail();
+        int allGoal = LoggedUser.getInstance().getGoals().size();
+        int completedGoal = completedGoalsCount();
+
+        mDisplayName.setText(String.format(getString(R.string.hello), displayName));
+        mUserName.setText(String.format(getString(R.string.username), userName));
+        mEmail.setText(String.format(getString(R.string.email), email));
+        mProgress.setText(String.format("%s/%s goals", completedGoal, allGoal));
+    }
+
+    private int completedGoalsCount() {
+        int count = 0;
+
+        for (Goal goal : LoggedUser.getInstance().getGoals()) {
+            if (goal.isDone()) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     @Override

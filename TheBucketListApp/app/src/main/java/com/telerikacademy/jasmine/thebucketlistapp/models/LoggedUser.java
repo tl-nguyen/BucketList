@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import com.telerik.everlive.sdk.core.model.system.User;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.UUID;

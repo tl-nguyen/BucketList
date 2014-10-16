@@ -55,5 +55,8 @@
     <string name="shake_for_random">SHAKE!!!</string>
     <string name="remember_me">Remember Me</string>
     <string name="new_brags_notification">There\'re some new brags, check them out ;)</string>
+    <string name="hello">Hello %s</string>
+    <string name="username">Username: %s</string>
+    <string name="email">Email: %s</string>
 
 </resources>

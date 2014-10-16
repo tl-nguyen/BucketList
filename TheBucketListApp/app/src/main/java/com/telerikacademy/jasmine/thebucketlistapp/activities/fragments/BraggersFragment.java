@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.telerikacademy.jasmine.thebucketlistapp.persisters.RemoteDbManager;
 import com.telerikacademy.jasmine.thebucketlistapp.utils.BragAdapter;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class BraggersFragment extends Fragment implements AdapterView.OnItemClickListener {
 
