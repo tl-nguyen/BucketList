@@ -46,6 +46,7 @@ public class MainService extends Service {
                 if (requestResult.getSuccess()) {
                     if (currentBragCount!= -1 && requestResult.getValue().size() > currentBragCount) {
                         currentBragCount = requestResult.getValue().size();
+                        LoggedUser.getInstance().setCurrentBragsCount(currentBragCount);
                         createSimpleNotification(getString(R.string.new_brags_notification));
                     }
                 }
